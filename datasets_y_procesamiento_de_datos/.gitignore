@@ -1,0 +1,7 @@
+.venv/
+.idea/
+__pycache__/
+.ipynb_checkpoints/
+# De los crudos va sólo el zip, que el 0_ descomprime.
+data/raw/*
+!data/raw/*.zip

@@ -1,0 +1,14 @@
+pandas==3.0.5
+geopandas==1.1.4
+shapely==2.1.2
+pyproj==3.8.0
+pyogrio==0.13.0
+pyarrow==25.0.1
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+pillow==12.3.0
+requests==2.34.2
+xlrd==2.0.2
+scikit-learn==1.9.1
+jupyterlab==4.6.3
