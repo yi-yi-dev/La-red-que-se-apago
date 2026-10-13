@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+@import '@fontsource/courier-prime/400.css';
+@import '@fontsource/courier-prime/700.css';
+
+/* La paleta del talonario. */
+@theme {
+  --color-carton: #ede4d3;
+  --color-carton-mapa: #e5dac5; /* la parte del mapa, un poco más oscura para que se lea la división */
+  --color-talon: #d7c9b5; /* el mismo cartón, oscurecido */
+  --color-suelo: #d1c0a6; /* el talón de abajo, un poco más oscuro que el lateral para que resalte */
+  --color-suelo-mapa: #c4b094; /* el talón de abajo, del lado del mapa */
+  --color-tinta: #2b2b2b;
+  --color-oxido: #b5533c; /* la franja del borde derecho */
+  --color-violeta: #4a3aa7; /* la tinta del sello fechador */
+  --color-mesa: #2f2a26; /* la mesa sobre la que está el boleto; se ve por las muescas */
+  /* Las vías por categoría, validadas sobre el cartón del mapa: el naranja tiene poco contraste y
+     lo compensa la leyenda con texto. La levantada usa el rojo de la inactiva, punteado. */
+  --color-via-pasajeros: #178a6a;
+  --color-via-carga: #e69a48;
+  --color-via-inactiva: #93281f;
+  --color-sin-tren: #9a9184; /* la gente que nunca tuvo tren: no tiene vía, así que va en gris */
+  --color-bordo: #6d1a2b; /* los círculos de Reconectar, al 19 %: claros, no se confunden con la vía roja */
+  --color-cerradas: #4a3aa7; /* las estaciones cerradas del gráfico: la tinta del sello, distinta de las vías */
+  --font-boleto: 'Courier Prime', monospace;
+  --breakpoint-md: 1080px; /* por debajo de este ancho, la app usa el layout de celular */
+}
+
+/* Lo que queda debajo de la app cuando la barra del navegador del celular se esconde es mesa. */
+html,
+body {
+  background: var(--color-mesa);
+}
+
+/* Todas las vías del mapa, de cualquier categoría, van con el mismo grosor. */
+:root {
+  --grosor-via: 1.8px;
+}
+
+/* Fibras blancas sobre fondo transparente: van encima de cualquier color de fondo. Son
+   referencia/light-paper-fibers.png con el contraste del alfa multiplicado por 6 (fuerte, el
+   fondo) y por 2 (suave, el suelo del slider), en WebP sin pérdida. */
+.papel {
+  background-image: url('../public/texturas/papel-fibras-fuerte.webp');
+}
+.papel-suave {
+  background-image: url('../public/texturas/papel-fibras-suave.webp');
+}

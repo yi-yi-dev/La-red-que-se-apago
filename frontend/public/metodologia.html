@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuentes y Metodología · La red que se apagó</title>
+<link rel="icon" type="image/webp" href="favicon.webp">
+<style>
+  /* La paleta del boleto (src/styles.css). La Courier Prime va sólo en títulos y consultas;
+     la página es estática, así que está copiada en public/tipografia. */
+  @font-face { font-family: 'Courier Prime'; font-weight: 400; font-display: swap; src: url('tipografia/courier-prime-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Courier Prime'; font-weight: 700; font-display: swap; src: url('tipografia/courier-prime-latin-700-normal.woff2') format('woff2'); }
+  :root {
+    --carton: #ede4d3;
+    --talon: #d7c9b5;
+    --tinta: #2b2b2b;
+    --oxido: #b5533c;
+    --violeta: #4a3aa7;
+    --mesa: #2f2a26;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 24px; }
+  body {
+    margin: 0;
+    background: var(--carton) url('texturas/papel-fibras-fuerte.webp');
+    color: var(--tinta);
+    font: 17px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  /* Una hoja lisa sobre el cartón, con un filete óxido a la izquierda que recuerda al talón desde
+     donde se llega. */
+  .hoja {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 48px 56px 64px;
+    background: #fbf8f2;
+    border-left: 6px solid rgb(181 83 60 / 0.55);
+  }
+  @media (max-width: 640px) {
+    .hoja { margin: 0; padding: 32px 16px 48px; border-left-width: 4px; }
+  }
+  h1, h2, h3, h4, .encabezado { font-family: 'Courier Prime', monospace; }
+  .encabezado {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .encabezado a { color: inherit; }
+  h1 { font-size: 2.5rem; line-height: 1.1; margin: 8px 0 32px; }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 3px double rgb(43 43 43 / 0.5);
+  }
+  h3 { font-size: 1.25rem; margin: 0 0 12px; }
+  h4 { font-size: 1rem; margin: 24px 0 8px; }
+  p, li { overflow-wrap: anywhere; }
+  code { font: 0.95em 'Courier Prime', monospace; }
+  a { color: var(--tinta); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--violeta); }
+  .indice { padding-left: 1.2em; margin: 8px 0 0; columns: 2; }
+  @media (max-width: 640px) { .indice { columns: 1; } }
+  .indice-general { columns: 1; margin: -16px 0 40px; }
+  .seccion { margin-top: 56px; }
+  .ficha {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgb(43 43 43 / 0.15);
+  }
+  .links { margin: 4px 0 12px; padding-left: 1.2em; }
+  .bloque { position: relative; margin: 8px 0 12px; }
+  pre {
+    margin: 0;
+    padding: 12px 14px;
+    overflow-x: auto;
+    background: #f2ece1;
+    border: 1px solid rgb(43 43 43 / 0.15);
+    border-radius: 2px;
+    font: 0.8rem/1.45 'Courier Prime', monospace;
+  }
+  .figura { margin: 16px 0 20px; }
+  .figura a { display: block; }
+  .figura img { display: block; width: 100%; height: auto; border: 1px solid rgb(43 43 43 / 0.15); }
+  .figura figcaption { margin-top: 6px; font-size: 0.85rem; line-height: 1.45; opacity: 0.75; }
+  .notas > li { margin-bottom: 12px; }
+  button.copiar {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 1px 10px;
+    background: var(--carton);
+    color: var(--tinta);
+    border: 1px solid rgb(43 43 43 / 0.25);
+    border-radius: 2px;
+    font: 700 0.75rem 'Courier Prime', monospace;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+<p class="encabezado"><a href="./">La red que se apagó</a></p>
+<h1>Fuentes y Metodología</h1>
+<ul class="indice indice-general">
+  <li><a href="#fuentes">Fuentes</a></li>
+  <li><a href="#metodologia">Metodología</a></li>
+</ul>
+
+<section id="fuentes">
+<h2>Fuentes</h2>
+<p>La app se arma con seis bases de datos públicas: cinco alimentan las visualizaciones y la sexta, el ONDaT, sirve de control.</p>
+<ul class="indice">
+  <li><a href="#ide">IDE de Transporte</a></li>
+  <li><a href="#osm">OpenStreetMap</a></li>
+  <li><a href="#wikidata">Wikidata</a></li>
+  <li><a href="#indec">INDEC</a></li>
+  <li><a href="#ign">IGN</a></li>
+  <li><a href="#ondat">ONDaT</a></li>
+</ul>
+
+<article class="ficha" id="ide">
+<h3>IDE de Transporte</h3>
+<p>La Secretaría de Transporte de la Nación publica en su Infraestructura de Datos Espaciales (IDE) dos capas en GeoJSON. La traza ferroviaria trae tramos con su recorrido, su estado actual (activo o no operativo) y su largo declarado en km. La de estaciones trae estaciones construidas, con su nombre y su posición.</p>
+<h4>Descarga</h4>
+<ul class="links">
+  <li><a href="https://ide.transporte.gob.ar/geoserver/idera/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;outputFormat=application%2Fjson&amp;typeName=idera:Ferrocarril" target="_blank" rel="noopener">La traza</a></li>
+  <li><a href="https://ide.transporte.gob.ar/geoserver/idera/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;outputFormat=application%2Fjson&amp;typeName=idera:Estacion_Ferroviaria" target="_blank" rel="noopener">Las estaciones</a></li>
+</ul>
+<h4>En el repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/Ferrocarril.geojson.zip" target="_blank" rel="noopener"><code>Ferrocarril.geojson</code></a> y <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/Estacion_Ferroviaria.geojson.zip" target="_blank" rel="noopener"><code>Estacion_Ferroviaria.geojson</code></a></p>
+<h4>Licencia</h4>
+<p>No nombra ninguna, pero el servidor declara acceso libre y sin restricciones.</p>
+</article>
+
+<article class="ficha" id="osm">
+<h3>OpenStreetMap</h3>
+<p>Dos consultas a OpenStreetMap, a través de la API Overpass. La primera trae tramos de vía sin uso en la Argentina, con su recorrido y su estado (en desuso, abandonada, arrasada o desmantelada). La segunda trae recorridos de tren, con las vías que recorre cada uno y el tipo de servicio (si son de pasajeros o no).</p>
+<h4>Descarga</h4>
+<p>Cada link corre su consulta y puede tardar varios minutos. Los datos de la app se bajaron en octubre de 2026.</p>
+<ul class="links">
+  <li><a href="https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A10000%5D%3B%0Aarea%5B%22ISO3166-1%22%3D%22AR%22%5D%5Badmin_level%3D2%5D-%3E.a%3B%0A%28%0A%20%20way%5B%22railway%22%3D%22abandoned%22%5D%28area.a%29%3B%0A%20%20way%5B%22railway%22%3D%22disused%22%5D%28area.a%29%3B%0A%20%20way%5B%22railway%22%3D%22razed%22%5D%28area.a%29%3B%0A%20%20way%5B%22railway%22%3D%22dismantled%22%5D%28area.a%29%3B%0A%29%3B%0Aout%20geom%3B" target="_blank" rel="noopener">Vía sin uso</a></li>
+</ul>
+<div class="bloque"><button class="copiar">copiar</button><pre>[out:json][timeout:10000];
+area["ISO3166-1"="AR"][admin_level=2]-&gt;.a;
+(
+  way["railway"="abandoned"](area.a);
+  way["railway"="disused"](area.a);
+  way["railway"="razed"](area.a);
+  way["railway"="dismantled"](area.a);
+);
+out geom;</pre></div>
+<ul class="links">
+  <li><a href="https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A10000%5D%3B%0Arelation%5B%22route%22%3D%22train%22%5D%28-55.1%2C-73.6%2C-21.7%2C-53.6%29%3B%0Aout%20geom%3B" target="_blank" rel="noopener">Recorridos de tren</a></li>
+</ul>
+<div class="bloque"><button class="copiar">copiar</button><pre>[out:json][timeout:10000];
+relation["route"="train"](-55.1,-73.6,-21.7,-53.6);
+out geom;</pre></div>
+<p>Si un link falla, la consulta se puede correr a mano en <a href="https://overpass-turbo.eu/" target="_blank" rel="noopener">overpass-turbo.eu</a> (exportar como raw OSM data).</p>
+<h4>En el repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/osm_rail_abandoned.json.zip" target="_blank" rel="noopener"><code>osm_rail_abandoned.json</code></a> y <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/osm_rutas_tren.json.zip" target="_blank" rel="noopener"><code>osm_rutas_tren.json</code></a></p>
+<h4>Licencia</h4>
+<p><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Open Database License (ODbL)</a>.</p>
+</article>
+
+<article class="ficha" id="wikidata">
+<h3>Wikidata</h3>
+<p>Wikidata, la base de datos abierta de la Fundación Wikimedia, tiene estaciones de tren de la Argentina. De cada una trae el nombre y (cuando están cargadas) la posición geográfica, la fecha de apertura o de construcción y la de cierre.</p>
+<h4>Descarga</h4>
+<p>En <a href="https://query.wikidata.org/" target="_blank" rel="noopener">query.wikidata.org</a>, correr esta consulta. Los datos de la app se bajaron en octubre de 2026.</p>
+<div class="bloque"><button class="copiar">copiar</button><pre>SELECT ?st ?stLabel ?coord ?opened ?closed ?inception WHERE {
+  ?st wdt:P31/wdt:P279* wd:Q55488 .   # es una estación de tren (o subclase)
+  ?st wdt:P17 wd:Q414 .               # país = Argentina
+  OPTIONAL { ?st wdt:P625  ?coord }     # coordenadas
+  OPTIONAL { ?st wdt:P1619 ?opened }    # apertura al público
+  OPTIONAL { ?st wdt:P3999 ?closed }    # cierre oficial
+  OPTIONAL { ?st wdt:P571  ?inception } # construcción
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "es,en". }
+}</pre></div>
+<h4>En el repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/wikidata_estaciones.csv.zip" target="_blank" rel="noopener"><code>wikidata_estaciones.csv</code></a></p>
+<h4>Licencia</h4>
+<p>Dominio público, con <a href="https://www.wikidata.org/wiki/Wikidata:Licensing" target="_blank" rel="noopener">Creative Commons Zero (CC0)</a>.</p>
+</article>
+
+<article class="ficha" id="indec">
+<h3>INDEC</h3>
+<p>Los radios censales de 1991, 2001, 2010 y 2022, que publica el INDEC. Cada radio trae su polígono, el código de su provincia y su departamento, su población y sus viviendas.</p>
+<h4>Descarga</h4>
+<ul class="links">
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.10/download/radios-censales-1991.csv">Censo 1991</a></li>
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.7/download/radios-censales-2001.csv">Censo 2001</a></li>
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.4/download/radios-censales-2010.csv">Censo 2010</a></li>
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.1/download/radios-censales-2022.csv">Censo 2022</a></li>
+</ul>
+<h4>En el repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios1991.csv.zip" target="_blank" rel="noopener"><code>radios1991.csv</code></a>, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios2001.csv.zip" target="_blank" rel="noopener"><code>radios2001.csv</code></a>, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios2010.csv.zip" target="_blank" rel="noopener"><code>radios2010.csv</code></a> y <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios2022.csv.zip" target="_blank" rel="noopener"><code>radios2022.csv</code></a></p>
+<h4>Licencia</h4>
+<p><a href="https://datos.gob.ar/dataset/radios-censales-censos-1991-a-2022" target="_blank" rel="noopener">Creative Commons Atribución 4.0 (CC BY 4.0)</a>.</p>
+</article>
+
+<article class="ficha" id="ign">
+<h3>IGN</h3>
+<p>El Instituto Geográfico Nacional publica los polígonos de las 24 provincias.</p>
+<h4>Descarga</h4>
+<ul class="links">
+  <li><a href="https://wms.ign.gob.ar/geoserver/ows?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typeNames=ign:provincia&amp;outputFormat=application/json">GeoJSON de las provincias</a></li>
+</ul>
+<h4>En el repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/ign_provincia.json.zip" target="_blank" rel="noopener"><code>ign_provincia.json</code></a></p>
+<h4>Licencia</h4>
+<p>Sus <a href="https://www.ign.gob.ar/descargas/tyc1.html" target="_blank" rel="noopener">términos de uso</a> piden reconocer la autoría del IGN y compartir la información de manera libre y gratuita.</p>
+</article>
+
+<article class="ficha" id="ondat">
+<h3>ONDaT</h3>
+<p>El Observatorio Nacional de Datos de Transporte (de la UTN) publica una planilla con la serie anual de los km de red ferroviaria en servicio, que llega hasta 2000. La app no la usa de forma directa en las visualizaciones, pero sirve de control para comprobar que los km reconstruidos año por año sigan la curva oficial.</p>
+<h4>Descarga</h4>
+<ul class="links">
+  <li><a href="https://ondat.c3t-utn.ar/wp-content/uploads/2015/08/Transporte-Ferroviario.-Datos-generales-hist%C3%B3ricos-062015.xls">Planilla de Excel</a></li>
+</ul>
+<h4>En el repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/ondat_ffcc_hist.xls.zip" target="_blank" rel="noopener"><code>ondat_ffcc_hist.xls</code></a></p>
+<h4>Licencia</h4>
+<p><a href="https://ondat.c3t-utn.ar/?p=1263" target="_blank" rel="noopener">La página de la serie</a> no declara ninguna.</p>
+</article>
+</section>
+
+<section id="metodologia" class="seccion">
+<h2>Metodología</h2>
+<p>El análisis, el procesamiento y la exploración de los datos se hicieron en Python, antes de desarrollar la app. El código está en <a href="https://github.com/yi-yi-dev/La-red-que-se-apago" target="_blank" rel="noopener">[repo]</a></p>
+<ul class="indice">
+  <li><a href="#motivacion">La motivación</a></li>
+  <li><a href="#generar">Cómo se generaron los datos</a></li>
+  <li><a href="#validar">Cómo se validaron</a></li>
+  <li><a href="#notas">Notas finales</a></li>
+  <li><a href="#app">Del análisis a la app</a></li>
+  <li><a href="#ia">Uso de inteligencia artificial</a></li>
+</ul>
+
+<article class="ficha" id="motivacion">
+<h3>La motivación</h3>
+<p>La idea era ver cómo evolucionó la red ferroviaria argentina a lo largo de su historia (cuándo creció, cuándo se apagó y a quién dejó sin tren). Lo que podes encontrar son mapas y datos sueltos de algunos años pero nada completo desde el inicio de la red hasta la actualidad. Para eso teniamos que generar esos datos con lo que sí está publicado, y después validar los datos generados.</p>
+</article>
+
+<article class="ficha" id="generar">
+<h3>Cómo se generaron los datos</h3>
+<figure class="figura"><a href="metodologia/diagrama_pipeline.webp" target="_blank" rel="noopener"><img src="metodologia/diagrama_pipeline.webp" width="3380" height="2000" loading="lazy" alt="Diagrama del recorrido de los datos: de las fuentes que baja 0_generacion_datasets a los pasos de 1_datos_centrales, agrupados por la pregunta de la app que contestan"></a><figcaption>El recorrido de los datos, de las fuentes (<code>0_generacion_datasets</code>) a su procesamiento (<code>1_datos_centrales</code>).</figcaption></figure>
+<p>Ninguna fuente tiene la red de cada año, pero cada una aporta un dato distinto. La vía sale de dos mapas: el del Estado tiene la que existe hoy y OpenStreetMap suma la que se levantó. Las fechas salen de las estaciones de Wikidata: cada tramo de vía toma el año de apertura y de cierre de la estación más cercana que los tenga. Con esas dos fechas y el estado de hoy de cada tramo (con pasajeros, de carga, inactivo o levantado) se arma la red de cualquier año, de 1857 a 2025.</p>
+<p>Para la gente, cada radio censal del INDEC se clasifica según las estaciones que tiene a menos de 10 km: con tren de pasajeros, sólo de carga, perdió el tren o nunca tuvo tren. Se hace con la red del año de cada censo, de 1991 a 2022.</p>
+</article>
+
+<article class="ficha" id="validar">
+<h3>Cómo se validaron</h3>
+<h4>Contra la serie oficial</h4>
+<p>El ONDaT publica los km de red en servicio de cada año hasta 2000. Esa serie no se usó para fechar (para evitar el sobreajuste) y mas que nada sirvio como control.</p>
+<figure class="figura"><a href="metodologia/control_ondat.webp" target="_blank" rel="noopener"><img src="metodologia/control_ondat.webp" width="842" height="505" loading="lazy" alt="Km en servicio reconstruidos contra la serie del ONDaT, y su cociente"></a><figcaption>Arriba, los km en servicio reconstruidos (verde) y los del ONDaT (gris); abajo, su cociente. Las líneas verticales son 1961, 1977 y 1993.</figcaption></figure>
+<h4>Contra mapas reales</h4>
+<p>La red de hoy generada se comparó con los mapas más recientes que se encontraron. La vía en servicio sigue los mismos corredores que un mapa de corredores operativos de 2026. Con un mapa de 2021 que usa las mismas cuatro categorías, la diferencia está casi toda en la vía de pasajeros que desde entonces se suspendieron varios servicios, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a> lista cada uno con la noticia que lo corrobora.</p>
+<figure class="figura"><a href="metodologia/corredores_2026.webp" target="_blank" rel="noopener"><img src="metodologia/corredores_2026.webp" width="898" height="747" loading="lazy" alt="La vía en servicio generada para 2025 al lado de un mapa de corredores operativos de 2026"></a><figcaption>A la izquierda, la vía en servicio generada; a la derecha, el mapa de corredores operativos de 2026 (<a href="https://x.com/GGertino/status/1940247940452536692" target="_blank" rel="noopener">fuente</a>). De <code>2_analisis</code>.</figcaption></figure>
+<figure class="figura"><a href="metodologia/mapa_2021.webp" target="_blank" rel="noopener"><img src="metodologia/mapa_2021.webp" width="1035" height="790" loading="lazy" alt="Las cuatro categorías generadas para 2025 al lado de un mapa de 2021 con las mismas categorías"></a><figcaption>A la izquierda, las cuatro categorías generadas en 2025; a la derecha, un mapa de 2021 con las mismas (<a href="https://www.reddit.com/r/argentina/comments/mbkvuu/mapa_de_la_red_ferroviaria_de_argentina_2021/" target="_blank" rel="noopener">fuente</a>). De <code>2_analisis</code>.</figcaption></figure>
+<h4>Por qué la estación más cercana</h4>
+<p>También se probaron modelos de aprendizaje automático que aprenden el año a partir de la posición. Más allá del error, suavizan mucho la curva, y los cierres de golpe de 1961, 1977 y 1993 se pierden. La estación más cercana es la más simple de explicar y la que mejor sigue la curva oficial.</p>
+<figure class="figura"><a href="metodologia/comparacion_metodos_fechado.webp" target="_blank" rel="noopener"><img src="metodologia/comparacion_metodos_fechado.webp" width="2000" height="1125" loading="lazy" alt="Los km de red de cada método de fechado contra la serie del ONDaT"></a><figcaption>Cada forma de fechar contra el ONDaT (gris), con su error de validación sobre las estaciones, su error contra el ONDaT y cuánto siguen sus cambios a los oficiales. De <code>1bis_otras_formas_de_fechar</code>.</figcaption></figure>
+<p>Dos ejemplos, sobre una grilla de todo el país: el año de apertura, el de cierre y la diferencia entre los dos que le tocaría a cada lugar, junto a su curva contra el ONDaT.</p>
+<figure class="figura"><a href="metodologia/fechado_1_vecino.webp" target="_blank" rel="noopener"><img src="metodologia/fechado_1_vecino.webp" width="1573" height="617" loading="lazy" alt="Año de apertura, de cierre y su diferencia con la estación más cercana, sobre una grilla de todo el país, y su curva contra el ONDaT"></a><figcaption>La estación más cercana, el método elegido. De <code>1bis_otras_formas_de_fechar</code>.</figcaption></figure>
+<figure class="figura"><a href="metodologia/fechado_red_neuronal.webp" target="_blank" rel="noopener"><img src="metodologia/fechado_red_neuronal.webp" width="1573" height="617" loading="lazy" alt="Año de apertura, de cierre y su diferencia con una red neuronal, sobre una grilla de todo el país, y su curva contra el ONDaT"></a><figcaption>Una red neuronal. De <code>1bis_otras_formas_de_fechar</code>.</figcaption></figure>
+</article>
+
+<article class="ficha" id="notas">
+<h3>Notas finales</h3>
+<ul class="notas">
+  <li>El resultado es una reconstrucción abierta y georreferenciada de la red ferroviaria argentina año por año, de 1857 a 2025, con el estado de cada tramo y cruzada con la gente de cuatro censos. Hasta ahora esa historia se contaba con mapas o datos sueltos; con datos continuos se puede ver la red crecer y apagarse sobre el territorio.</li>
+  <li>Las fechas de la vía son estimadas, y las de cierre son más gruesas que las de apertura porque Wikidata tiene menos. No hay fecha de levantamiento, toda vía empieza con pasajeros y cada tramo tiene un solo cambio.</li>
+  <li>Otros resultados que no se usaron en la app:
+    <h4>Dónde vive cada categoría</h4>
+    <p>Ordenando a la gente por la densidad del lugar donde vive, la que nunca tuvo tren se amontona en los radios más rurales, y la que perdió el tren o sólo tiene carga vive en los pueblos y ciudades chicas del medio.</p>
+    <figure class="figura"><a href="metodologia/densidad.webp" target="_blank" rel="noopener"><img src="metodologia/densidad.webp" width="842" height="448" loading="lazy" alt="Parte de cada categoría que vive en cada decil de densidad del radio censal"></a><figcaption>Qué parte de cada categoría vive en cada décimo de la población, del radio más rural al más denso. De <code>2_analisis</code>.</figcaption></figure>
+    <h4>Otras formas de mostrar a la gente</h4>
+    <p>Se exploraron formas alternativas de mostrar a la gente sobre el mapa, como hexágonos iguales de 50 km, que no dependen de los límites de los departamentos.</p>
+    <figure class="figura"><a href="metodologia/hexagonos_color.gif" target="_blank" rel="noopener"><img src="metodologia/hexagonos_color.gif" width="1120" height="743" loading="lazy" alt="Gente de cada categoría en hexágonos de 50 km, con la población en el color, censo por censo"></a><figcaption>Hexágonos de 50 km con la población en el color, un cuadro por censo. De <code>2_analisis</code>.</figcaption></figure>
+    <figure class="figura"><a href="metodologia/hexagonos_area.gif" target="_blank" rel="noopener"><img src="metodologia/hexagonos_area.gif" width="1120" height="743" loading="lazy" alt="Gente de cada categoría en hexágonos de 50 km, con la población en el tamaño, censo por censo"></a><figcaption>Los mismos hexágonos con la población en el tamaño. De <code>2_analisis</code>.</figcaption></figure>
+  </li>
+</ul>
+</article>
+
+<article class="ficha" id="app">
+<h3>Del análisis a la app</h3>
+<p>Todo el análisis se hizo en Python, en notebooks que se corren en orden: <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/0_generacion_datasets.ipynb" target="_blank" rel="noopener">0_generacion_datasets.ipynb</a> baja las fuentes, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/1_datos_centrales.ipynb" target="_blank" rel="noopener">1_datos_centrales.ipynb</a> las procesa, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a> analiza y valida, y <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/3_exportacion_frontend.ipynb" target="_blank" rel="noopener">3_exportacion_frontend.ipynb</a> escribe los datos para la app.</p>
+</article>
+
+<article class="ficha" id="ia">
+<h3>Uso de inteligencia artificial</h3>
+<p>Se usó Claude Code (Opus 4.5) para:</p>
+<ul>
+  <li>Facilitar la búsqueda de datasets públicos útiles para el análisis.</li>
+  <li>Asistir en la generación de código Python en la exploración y el análisis de los datos, siempre con supervisión e intervención humana.</li>
+  <li>Asistir en la generación de código TypeScript y Angular para el desarrollo de la app, siempre con supervisión e intervención humana.</li>
+</ul>
+</article>
+</section>
+
+</main>
+<script>
+  for (const boton of document.querySelectorAll('button.copiar')) {
+    boton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(boton.nextElementSibling.textContent);
+        boton.textContent = 'copiado';
+      } catch (e) {
+        boton.textContent = 'no se pudo';
+      }
+      setTimeout(() => { boton.textContent = 'copiar'; }, 1500);
+    });
+  }
+</script>
+</body>
+</html>
