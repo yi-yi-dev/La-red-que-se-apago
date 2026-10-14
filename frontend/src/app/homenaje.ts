@@ -156,18 +156,30 @@ export const FOTOS_FIN = [
                 />
               </div>
             </div>
-            <!-- Una mano con una flecha curva: se entiende sin leer, con mouse o con dedo. Al abrir la
+            <!-- Una mano con una flecha de dos puntas: se entiende sin leer, con mouse o con dedo. Al abrir la
                  foto, la mano va y vuelve una vez. -->
             <p class="pista">
               <svg class="icono-pista" viewBox="0 0 36 30" aria-hidden="true">
+                <!-- move-horizontal y pointer de Lucide (lucide-static 1.56.0), © Lucide Icons and
+                     Contributors, licencia ISC: https://lucide.dev/license -->
                 <!-- Una flecha de dos puntas: se puede arrastrar hacia los dos lados. -->
-                <path class="arco" d="M5 9 C12 3, 24 3, 31 9" />
-                <path class="arco" d="M7.5 4.8 L5 9 L9.6 9.6" />
-                <path class="arco" d="M28.5 4.8 L31 9 L26.4 9.6" />
-                <path
-                  class="mano"
-                  d="M15.5 25.5 l-3.2 -3.4 a1.6 1.6 0 0 1 2.3 -2.2 l1.4 1.4 V12.6 a1.6 1.6 0 0 1 3.2 0 V18 M19.2 17 a1.6 1.6 0 0 1 3.2 0 V18.4 M22.4 17.6 a1.6 1.6 0 0 1 3.2 0 V21 c0 3 -2 5 -5 5 h-1.6 c-1.2 0 -2.2 -0.3 -3.1 -1"
-                />
+                <g class="arco" transform="translate(7 -5) scale(0.9167)">
+                  <path d="m18 8 4 4-4 4" />
+                  <path d="M2 12h20" />
+                  <path d="m6 8-4 4 4 4" />
+                </g>
+                <!-- La animación va en el grupo de afuera, así no pisa la escala del de adentro. -->
+                <g class="mano">
+                  <g transform="translate(9 9) scale(0.8333)">
+                    <path d="M22 14a8 8 0 0 1-8 8" />
+                    <path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2" />
+                    <path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1" />
+                    <path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10" />
+                    <path
+                      d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"
+                    />
+                  </g>
+                </g>
               </svg>
               <span>Tocá o arrastrá la foto para girarla</span>
             </p>
@@ -375,11 +387,13 @@ export const FOTOS_FIN = [
       stroke-linejoin: round;
     }
     /* La flecha, más tenue que la mano: lo que se hace es la mano. */
+    /* Las dos piezas están achicadas dentro del ícono: el trazo se agranda para que se vea de 1,5. */
     .arco {
       stroke-opacity: 0.55;
+      stroke-width: 1.65;
     }
     .mano {
-      fill: var(--color-carton);
+      stroke-width: 1.8;
     }
     /* La clase abierta se pone al abrir cada foto, así la animación arranca de nuevo cada vez. */
     .ampliada.abierta .mano {

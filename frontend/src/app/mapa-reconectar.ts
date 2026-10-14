@@ -124,14 +124,18 @@ interface Circulo extends d3.SimulationNodeDatum {
             >
               <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
                 @if (h.id === 'pintar') {
-                  <!-- Un rodillo de pintar. -->
-                  <path d="M4 3.5h12a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3a1 1 0 011-1z" />
-                  <path d="M17 6h3v5.5h-8V15" />
-                  <path d="M10.5 15h3v6.5h-3z" />
+                  <!-- paint-roller de Lucide (lucide-static 1.56.0), © Lucide Icons and Contributors,
+                       licencia ISC: https://lucide.dev/license -->
+                  <rect width="16" height="6" x="2" y="2" rx="2" />
+                  <path d="M10 16v-2a2 2 0 0 1 2-2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                  <rect width="4" height="6" x="8" y="16" rx="1" />
                 } @else {
-                  <path d="M8 20h12" />
-                  <path d="M3 14l9-9 7 7-8 8H7z" />
-                  <path d="M8 9l7 7" />
+                  <!-- eraser de Lucide (lucide-static 1.56.0), © Lucide Icons and Contributors,
+                       licencia ISC: https://lucide.dev/license -->
+                  <path
+                    d="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21"
+                  />
+                  <path d="m5.082 11.09 8.828 8.828" />
                 }
               </svg>
               <span class="etiqueta">{{ h.nombre }}</span>
@@ -144,8 +148,10 @@ interface Circulo extends d3.SimulationNodeDatum {
             (click)="reconexion.deshacer()"
           >
             <svg class="icono" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 14L4 9l5-5" />
-              <path d="M4 9h10a6 6 0 010 12h-3" />
+              <!-- undo-2 de Lucide (lucide-static 1.56.0), © Lucide Icons and Contributors, licencia
+                   ISC: https://lucide.dev/license -->
+              <path d="M9 14 4 9l5-5" />
+              <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
             </svg>
             <span class="etiqueta">Deshacer</span>
           </button>

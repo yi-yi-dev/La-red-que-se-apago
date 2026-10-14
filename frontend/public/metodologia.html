@@ -62,7 +62,9 @@
   a:hover { color: var(--violeta); }
   .indice { padding-left: 1.2em; margin: 8px 0 0; columns: 2; }
   @media (max-width: 640px) { .indice { columns: 1; } }
-  .indice-general { columns: 1; margin: -16px 0 40px; }
+  .indice-general { columns: 1; margin: 0 0 40px; }
+  .links.acceso { margin-bottom: 32px; }
+  .titulo-indice { margin: 0; }
   .seccion { margin-top: 56px; }
   .ficha {
     margin-top: 40px;
@@ -105,6 +107,15 @@
 
 <p class="encabezado"><a href="./">La red que se apagó</a></p>
 <h1>Fuentes y Metodología</h1>
+<p>El código y los datos están en el <a href="https://github.com/yi-yi-dev/La-red-que-se-apago" target="_blank" rel="noopener">repositorio del proyecto</a>. El procesamiento está en <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/tree/main/datasets_y_procesamiento_de_datos" target="_blank" rel="noopener">datasets_y_procesamiento_de_datos</a>, en notebooks que se corren en orden, y la app en <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/tree/main/frontend" target="_blank" rel="noopener">frontend</a>.</p>
+<ul class="links acceso">
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/0_generacion_datasets.ipynb" target="_blank" rel="noopener">0_generacion_datasets.ipynb</a>: baja las fuentes y describe cada dataset y sus columnas.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/1_datos_centrales.ipynb" target="_blank" rel="noopener">1_datos_centrales.ipynb</a>: arma la vía, le pone fechas y clasifica a la gente de cada censo.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/1bis_otras_formas_de_fechar.ipynb" target="_blank" rel="noopener">1bis_otras_formas_de_fechar.ipynb</a>: compara la estación más cercana con otras formas de fechar la vía.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a>: analiza los resultados y los valida contra el ONDaT y mapas reales.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/3_exportacion_frontend.ipynb" target="_blank" rel="noopener">3_exportacion_frontend.ipynb</a>: escribe los datos que lee la app.</li>
+</ul>
+<h3 class="titulo-indice">Índice</h3>
 <ul class="indice indice-general">
   <li><a href="#fuentes">Fuentes</a></li>
   <li><a href="#metodologia">Metodología</a></li>
@@ -259,7 +270,7 @@ out geom;</pre></div>
 <p>El ONDaT publica los km de red en servicio de cada año hasta 2000. Esa serie no se usó para fechar (para evitar el sobreajuste) y mas que nada sirvio como control.</p>
 <figure class="figura"><a href="metodologia/control_ondat.webp" target="_blank" rel="noopener"><img src="metodologia/control_ondat.webp" width="842" height="505" loading="lazy" alt="Km en servicio reconstruidos contra la serie del ONDaT, y su cociente"></a><figcaption>Arriba, los km en servicio reconstruidos (verde) y los del ONDaT (gris); abajo, su cociente. Las líneas verticales son 1961, 1977 y 1993.</figcaption></figure>
 <h4>Contra mapas reales</h4>
-<p>La red de hoy generada se comparó con los mapas más recientes que se encontraron. La vía en servicio sigue los mismos corredores que un mapa de corredores operativos de 2026. Con un mapa de 2021 que usa las mismas cuatro categorías, la diferencia está casi toda en la vía de pasajeros que desde entonces se suspendieron varios servicios, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a> lista cada uno con la noticia que lo corrobora.</p>
+<p>La red de hoy generada se comparó con los mapas más recientes que se encontraron. La vía en servicio sigue los mismos corredores que un mapa de corredores operativos de 2026 (<a href="https://x.com/GGertino/status/1940247940452536692" target="_blank" rel="noopener">fuente</a>). Con un mapa de 2021 (<a href="https://www.reddit.com/r/argentina/comments/mbkvuu/mapa_de_la_red_ferroviaria_de_argentina_2021/" target="_blank" rel="noopener">fuente</a>) que usa las mismas cuatro categorías, la diferencia está casi toda en la vía de pasajeros que desde entonces se suspendieron varios servicios, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a> lista cada uno con la noticia que lo corrobora.</p>
 <figure class="figura"><a href="metodologia/corredores_2026.webp" target="_blank" rel="noopener"><img src="metodologia/corredores_2026.webp" width="898" height="747" loading="lazy" alt="La vía en servicio generada para 2025 al lado de un mapa de corredores operativos de 2026"></a><figcaption>A la izquierda, la vía en servicio generada; a la derecha, el mapa de corredores operativos de 2026 (<a href="https://x.com/GGertino/status/1940247940452536692" target="_blank" rel="noopener">fuente</a>). De <code>2_analisis</code>.</figcaption></figure>
 <figure class="figura"><a href="metodologia/mapa_2021.webp" target="_blank" rel="noopener"><img src="metodologia/mapa_2021.webp" width="1035" height="790" loading="lazy" alt="Las cuatro categorías generadas para 2025 al lado de un mapa de 2021 con las mismas categorías"></a><figcaption>A la izquierda, las cuatro categorías generadas en 2025; a la derecha, un mapa de 2021 con las mismas (<a href="https://www.reddit.com/r/argentina/comments/mbkvuu/mapa_de_la_red_ferroviaria_de_argentina_2021/" target="_blank" rel="noopener">fuente</a>). De <code>2_analisis</code>.</figcaption></figure>
 <h4>Por qué la estación más cercana</h4>
@@ -283,6 +294,9 @@ out geom;</pre></div>
     <p>Se exploraron formas alternativas de mostrar a la gente sobre el mapa, como hexágonos iguales de 50 km, que no dependen de los límites de los departamentos.</p>
     <figure class="figura"><a href="metodologia/hexagonos_color.gif" target="_blank" rel="noopener"><img src="metodologia/hexagonos_color.gif" width="1120" height="743" loading="lazy" alt="Gente de cada categoría en hexágonos de 50 km, con la población en el color, censo por censo"></a><figcaption>Hexágonos de 50 km con la población en el color, un cuadro por censo. De <code>2_analisis</code>.</figcaption></figure>
     <figure class="figura"><a href="metodologia/hexagonos_area.gif" target="_blank" rel="noopener"><img src="metodologia/hexagonos_area.gif" width="1120" height="743" loading="lazy" alt="Gente de cada categoría en hexágonos de 50 km, con la población en el tamaño, censo por censo"></a><figcaption>Los mismos hexágonos con la población en el tamaño. De <code>2_analisis</code>.</figcaption></figure>
+    <h4>Fijar la población y ver cómo varía con las vías históricas</h4>
+    <p>Si se deja quieta a la gente de un censo y se le pone encima la red de cada año, se ve cuánto del cambio es de las vías y no de dónde vive la gente.</p>
+    <figure class="figura"><a href="metodologia/poblacion_fija.webp" target="_blank" rel="noopener"><img src="metodologia/poblacion_fija.webp" width="774" height="438" loading="lazy" alt="Porcentaje de la gente de cada censo con tren de pasajeros a menos de 10 km, con la red de cada año de 1857 a 2025"></a><figcaption>La gente de cada censo con la red de cada año. Las líneas verticales son 1961, 1977 y 1993. De <code>2_analisis</code>.</figcaption></figure>
   </li>
 </ul>
 </article>
@@ -294,11 +308,12 @@ out geom;</pre></div>
 
 <article class="ficha" id="ia">
 <h3>Uso de inteligencia artificial</h3>
-<p>Se usó Claude Code (Opus 4.5) para:</p>
+<p>Se usó Claude Code (Opus 5.5) para:</p>
 <ul>
   <li>Facilitar la búsqueda de datasets públicos útiles para el análisis.</li>
-  <li>Asistir en la generación de código Python en la exploración y el análisis de los datos, siempre con supervisión e intervención humana.</li>
+  <li>Asistir en la generación de código Python para la exploración y el análisis de los datos, siempre con supervisión e intervención humana.</li>
   <li>Asistir en la generación de código TypeScript y Angular para el desarrollo de la app, siempre con supervisión e intervención humana.</li>
+  <li>Asistir en la redacción de los textos. Las ideas, el enfoque y las decisiones de datos, método y diseño son propias.</li>
 </ul>
 </article>
 </section>
