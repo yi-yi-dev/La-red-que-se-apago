@@ -29,6 +29,8 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - run: npx ng build --base-href /La-red-que-se-apago/
+      # La versión en inglés, en /La-red-que-se-apago/en/: la misma app con otro index.html.
+      - run: sh scripts/version_en.sh dist/Frontend/browser
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist/Frontend/browser

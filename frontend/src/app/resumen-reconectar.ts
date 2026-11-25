@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { CHECKPOINTS, EstadoApp, opacidadDesde, opacidadHasta } from './estado';
+import { miles, t, unDecimal } from './idioma';
 import { Reconexion } from './reconexion';
 
 const INDICE_RECONECTAR = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'reconectar');
@@ -8,10 +9,6 @@ const INDICE_RECONECTAR = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id ==
 const TAU_PERSECUCION = 150;
 const DT_MAXIMO = 100; // ms: con cuadros más largos que esto la animación se estira en vez de saltar
 const LLEGADA = 0.5; // km o personas: más cerca que esto, el número ya es el real
-
-function km(valor: number): string {
-  return Math.round(valor).toLocaleString('es-AR');
-}
 
 // Del lado izquierdo, en Reconectar: la invitación y, a medida que el usuario edita el mapa, qué hizo
 // y cuánta gente gana un tren de pasajeros cerca.
@@ -27,18 +24,24 @@ function km(valor: number): string {
       <!-- Un bloque común para que el título y el texto rodeen al sello. -->
       <div>
         <div class="hueco-sello"></div>
-        <h2 class="estampado font-bold">Reconectá la Argentina</h2>
+        <h2 class="estampado font-bold">
+          {{ t('Reconectá la Argentina', 'Reconnect Argentina') }}
+        </h2>
         <p class="texto">
-          Pintá en el mapa las vías naranjas, que hoy solo llevan carga, y las rojas, que no tienen
-          trenes, para que vuelvan a llevar pasajeros.
+          {{
+            t(
+              'Pintá en el mapa las vías naranjas, que hoy solo llevan carga, y las rojas, que no tienen trenes, para que vuelvan a llevar pasajeros.',
+              'Paint the orange tracks on the map, which only carry freight today, and the red ones, which have no trains, so they carry passengers again.'
+            )
+          }}
         </p>
         @if (resumen()) {
           <!-- Un boleto con su talón: a la izquierda los km pintados, a la derecha la gente. -->
           <div class="boleto">
             <div class="cuentas">
-              <span>Carga que suma pasajeros</span>
+              <span>{{ t('Carga que suma pasajeros', 'Freight adding passengers') }}</span>
               <b>{{ km(mostrado().kmMixtos) }} km</b>
-              <span class="mt-3">Vías reactivadas</span>
+              <span class="mt-3">{{ t('Vías reactivadas', 'Reactivated tracks') }}</span>
               <b>{{ km(mostrado().kmReactivados) }} km</b>
             </div>
             <div class="troquel"></div>
@@ -46,7 +49,12 @@ function km(valor: number): string {
               <b class="numero"
                 >{{ cifra() }} <span class="unidad">{{ unidad() }}</span></b
               >
-              <span>que hoy no tienen un tren de pasajeros cerca pasarían a tenerlo.</span>
+              <span>{{
+                t(
+                  'que hoy no tienen un tren de pasajeros cerca pasarían a tenerlo.',
+                  'who have no passenger train nearby today would get one.'
+                )
+              }}</span>
             </div>
           </div>
         }
@@ -196,7 +204,8 @@ function km(valor: number): string {
 export class ResumenReconectar {
   private readonly estado = inject(EstadoApp);
   private readonly reconexion = inject(Reconexion);
-  protected readonly km = km;
+  protected readonly km = miles;
+  protected readonly t = t;
   protected readonly resumen = this.reconexion.resumen;
 
   // Sólo en Reconectar: Fin queda libre.
@@ -254,11 +263,13 @@ export class ResumenReconectar {
   protected readonly cifra = computed(() => {
     const personas = this.mostrado().personasQueGanan;
     if (personas >= 1e6) {
-      return (personas / 1e6).toFixed(1).replace('.', ',');
+      return unDecimal(personas / 1e6);
     }
-    return Math.round(personas).toLocaleString('es-AR');
+    return miles(personas);
   });
   protected readonly unidad = computed(() =>
-    this.mostrado().personasQueGanan >= 1e6 ? 'millones de personas' : 'personas',
+    this.mostrado().personasQueGanan >= 1e6
+      ? t('millones de personas', 'million people')
+      : t('personas', 'people'),
   );
 }

@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { CargaDatos } from './datos';
 import { EstadoApp, opacidadEn } from './estado';
+import { EN, miles } from './idioma';
 
 // La portada, en el checkpoint del principio: el título y cuánta vía con trenes de pasajeros se
 // perdió desde su máximo y cuánta queda, con los mismos colores que esas dos redes en el mapa.
@@ -18,13 +19,23 @@ import { EstadoApp, opacidadEn } from './estado';
       >
         <!-- El bloque mide lo que el título: el gancho no aporta ancho y se estira hasta él. -->
         <div class="bloque">
-          <h1 class="titulo font-bold tracking-tight">La red<br />que se apagó</h1>
-          <p class="gancho">
-            Desde {{ c.anioPico }} se perdieron
-            <b class="text-via-inactiva">{{ c.kmPerdidos }} km</b>
-            de vías con trenes de pasajeros en la Argentina. Hoy quedan solo
-            <b class="text-via-pasajeros">{{ c.kmHoy }} km</b>.
-          </p>
+          @if (EN) {
+            <h1 class="titulo en font-bold tracking-tight">The network<br />that went dark</h1>
+            <p class="gancho">
+              Since {{ c.anioPico }}, Argentina has lost
+              <b class="text-via-inactiva">{{ c.kmPerdidos }} km</b>
+              of track with passenger trains. Only
+              <b class="text-via-pasajeros">{{ c.kmHoy }} km</b> remain today.
+            </p>
+          } @else {
+            <h1 class="titulo font-bold tracking-tight">La red<br />que se apagó</h1>
+            <p class="gancho">
+              Desde {{ c.anioPico }} se perdieron
+              <b class="text-via-inactiva">{{ c.kmPerdidos }} km</b>
+              de vías con trenes de pasajeros en la Argentina. Hoy quedan solo
+              <b class="text-via-pasajeros">{{ c.kmHoy }} km</b>.
+            </p>
+          }
         </div>
       </div>
     }
@@ -55,6 +66,11 @@ import { EstadoApp, opacidadEn } from './estado';
       white-space: nowrap;
       line-height: 0.95;
     }
+    /* "that went dark" tiene 14 letras contra las 12 de "que se apagó": la letra se achica en
+       proporción para ocupar el mismo ancho. */
+    .titulo.en {
+      font-size: clamp(1.75rem, 11.1cqw, 2.8rem);
+    }
     .gancho {
       margin-top: 2rem;
       font-size: 1.375rem;
@@ -63,6 +79,9 @@ import { EstadoApp, opacidadEn } from './estado';
     @media (min-width: 1080px) {
       .titulo {
         font-size: clamp(3rem, 12.5cqw, 4.9rem);
+      }
+      .titulo.en {
+        font-size: clamp(2.6rem, 10.7cqw, 4.2rem);
       }
       .gancho {
         margin-top: 2.5cqw;
@@ -74,6 +93,7 @@ import { EstadoApp, opacidadEn } from './estado';
 export class Portada {
   private readonly carga = inject(CargaDatos);
   private readonly estado = inject(EstadoApp);
+  protected readonly EN = EN;
 
   protected readonly opacidad = computed(() => opacidadEn(this.estado.posicion(), 0));
 
@@ -92,8 +112,8 @@ export class Portada {
     const hoy = serie.km_pasajeros[serie.anio.length - 1];
     return {
       anioPico: serie.anio[k],
-      kmPerdidos: Math.round(serie.km_pasajeros[k] - hoy).toLocaleString('es-AR'),
-      kmHoy: Math.round(hoy).toLocaleString('es-AR'),
+      kmPerdidos: miles(serie.km_pasajeros[k] - hoy),
+      kmHoy: miles(hoy),
     };
   });
 }

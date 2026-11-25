@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { CargaDatos } from './datos';
 import { ANCHO_FUNDIDO, CHECKPOINTS, EstadoApp, opacidadHasta } from './estado';
 import { FOTOS_FIN } from './homenaje';
+import { t } from './idioma';
 import { poligonosDelMapa, proyeccionDelMapa } from './mapa-argentina';
 
 const INDICE_RECONECTAR = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'reconectar');
@@ -34,7 +35,13 @@ const BORDE_FUNDIDO = 32; // px: acercado, el mapa se desvanece en los bordes en
       [style.--borde.px]="avanceZoom() * BORDE_FUNDIDO"
       [class.invisible]="opacidad() === 0"
     >
-      <svg class="size-full" role="img" aria-label="Mapa de dónde se sacaron las fotos">
+      <svg
+        class="size-full"
+        role="img"
+        [attr.aria-label]="
+          t('Mapa de dónde se sacaron las fotos', 'Map of where the photos were taken')
+        "
+      >
         <g [attr.transform]="vista().transformacion">
           <path class="tierra" [attr.d]="caminos().tierra" vector-effect="non-scaling-stroke" />
           @for (categoria of categorias; track categoria) {
@@ -172,6 +179,7 @@ export class MapaFin {
   private readonly elemento = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly tamanio = signal({ ancho: 0, alto: 0 }); // px
   protected readonly categorias = CATEGORIAS_DIBUJADAS;
+  protected readonly t = t;
   protected readonly colores = COLOR_CATEGORIA;
   protected readonly SEPARACION_NOMBRE = SEPARACION_NOMBRE;
   protected readonly BORDE_FUNDIDO = BORDE_FUNDIDO;

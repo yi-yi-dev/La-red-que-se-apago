@@ -14,6 +14,7 @@ import * as d3 from 'd3';
 import { CargaDatos } from './datos';
 import { Diseno, SANGRIA_EJE } from './diseno';
 import { CHECKPOINTS, EstadoApp, opacidadDesde, opacidadHasta, ultimoNoNulo } from './estado';
+import { METODOLOGIA, miles, t } from './idioma';
 import { CATEGORIAS } from './mapa-argentina';
 
 const ARRIBA = 32; // px para los títulos de los ejes
@@ -44,10 +45,6 @@ const PRIMER_ANIO = CHECKPOINTS[PRIMER_CHECKPOINT].anio!;
 const INDICE_GENTE = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'gente'); // desde acá, el gráfico de los censos
 const ULTIMO_ANIO = CHECKPOINTS[ULTIMO_CHECKPOINT].anio!;
 
-function miles(valor: number): string {
-  return Math.round(valor).toLocaleString('es-AR');
-}
-
 // Los km de vía de cada año en las cuatro categorías del mapa, apilados, y las estaciones cerradas
 // por año. Se van dibujando hasta el año de la escena. En escritorio el eje x coincide con los
 // checkpoints del slider que está abajo; en el celular el gráfico tiene su propio eje.
@@ -66,20 +63,26 @@ function miles(valor: number): string {
     >
       <div class="pr-4" [style.padding-left.px]="escalas().x0 - SANGRIA_EJE">
         <h2 class="text-2xl leading-tight font-bold max-md:text-xl xl:text-[1.75rem]">
-          ¿Cuánta vía quedaba en servicio cada año?
+          {{
+            t(
+              '¿Cuánta vía quedaba en servicio cada año?',
+              'How much track was in service each year?'
+            )
+          }}
         </h2>
         <p class="mt-1 text-xs leading-snug opacity-60">
-          Fuentes:
-          <a class="underline" href="metodologia.html#ide" target="_blank" rel="noopener"
-            >IDE de Transporte</a
+          {{ t('Fuentes:', 'Sources:') }}
+          <a class="underline" [href]="METODOLOGIA + '#ide'" target="_blank" rel="noopener">{{
+            t('IDE de Transporte', 'Transport SDI')
+          }}</a
           >,
-          <a class="underline" href="metodologia.html#osm" target="_blank" rel="noopener"
+          <a class="underline" [href]="METODOLOGIA + '#osm'" target="_blank" rel="noopener"
             >© OpenStreetMap</a
           >
-          y fechas de
-          <a class="underline" href="metodologia.html#wikidata" target="_blank" rel="noopener"
+          {{ t('y fechas de', 'and dates from') }}
+          <a class="underline" [href]="METODOLOGIA + '#wikidata'" target="_blank" rel="noopener"
             >Wikidata</a
-          >. Elaboración propia.
+          >. {{ t('Elaboración propia.', 'Own elaboration.') }}
         </p>
         <!-- Cada entrada prende o apaga su serie en el gráfico. -->
         <!-- Centrada sobre el gráfico, entre sus dos ejes. -->
@@ -113,7 +116,7 @@ function miles(valor: number): string {
               <svg width="5" height="10" aria-hidden="true">
                 <rect width="5" height="10" class="barra" />
               </svg>
-              Estaciones cerradas (eje derecho)
+              {{ t('Estaciones cerradas (eje derecho)', 'Closed stations (right axis)') }}
             </button>
           </li>
         </ul>
@@ -171,7 +174,7 @@ function miles(valor: number): string {
                 <svg width="10" height="10" aria-hidden="true">
                   <rect x="3" width="4" height="10" class="barra" />
                 </svg>
-                Estaciones cerradas: {{ d.cerradas }}
+                {{ t('Estaciones cerradas', 'Closed stations') }}: {{ d.cerradas }}
               </div>
             }
           </div>
@@ -233,6 +236,8 @@ export class SerieRed {
   private readonly carga = inject(CargaDatos);
   protected readonly estado = inject(EstadoApp);
   protected readonly SANGRIA_EJE = SANGRIA_EJE;
+  protected readonly METODOLOGIA = METODOLOGIA;
+  protected readonly t = t;
   private readonly diseno = inject(Diseno);
   private readonly lienzo = viewChild.required<ElementRef<SVGSVGElement>>('lienzo');
   private readonly caja = viewChild.required<ElementRef<HTMLElement>>('caja');
@@ -510,7 +515,7 @@ export class SerieRed {
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-tinta)')
-      .text('km de vía');
+      .text(t('km de vía', 'km of track'));
     // Termina donde terminan los números del eje: centrado, en el celular se saldría del gráfico.
     ejes
       .append('text')
@@ -519,7 +524,7 @@ export class SerieRed {
       .attr('text-anchor', 'end')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-tinta)')
-      .text('estaciones cerradas');
+      .text(t('estaciones cerradas', 'closed stations'));
 
     svg
       .select('.sensor')

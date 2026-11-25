@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { CargaDatos, Datos } from './datos';
 import { CHECKPOINTS, EstadoApp, opacidadEn } from './estado';
+import { EN, miles, t } from './idioma';
 import { Provincia, provinciasDelUltimoCenso } from './serie-censos';
 
 const ESCALA_MINIMA = 0.6; // la letra de un texto largo no baja de esta fracción
@@ -34,70 +35,97 @@ interface Cifras {
 // Un texto corto por checkpoint con año: lo que pasó, para leer junto al gráfico.
 const TEXTOS: Record<string, TextoDeCheckpoint> = {
   '1857': {
-    titulo: 'El primer tren',
+    titulo: t('El primer tren', 'The first train'),
     texto: () =>
-      'El 29 de agosto sale La Porteña, el primer tren del país, en un viaje inaugural de 10 km.',
+      t(
+        'El 29 de agosto sale La Porteña, el primer tren del país, en un viaje inaugural de 10 km.',
+        "On August 29, La Porteña, the country's first train, sets off on a 10 km inaugural trip.",
+      ),
     fuente: {
       nombre: 'Canal 26',
       url: 'https://www.canal26.com/turismo/2025/10/12/asi-fue-el-primer-tren-argentino-tenia-10-kilometros-de-extension-y-cambio-para-siempre-la-historia-del-pais/',
     },
   },
   '1907': {
-    titulo: 'La Ley Mitre',
+    titulo: t('La Ley Mitre', 'The Mitre Law'),
     texto: () =>
-      'Las empresas ferroviarias pueden traer del exterior los materiales para construir sus vías sin pagar aduana, hasta 1947. A cambio, pagan una única contribución del 3 % de lo que ganan con sus trenes, que se usa para hacer caminos hacia las estaciones, y quedan exentas de cualquier otro impuesto.',
+      t(
+        'Las empresas ferroviarias pueden traer del exterior los materiales para construir sus vías sin pagar aduana, hasta 1947. A cambio, pagan una única contribución del 3 % de lo que ganan con sus trenes, que se usa para hacer caminos hacia las estaciones, y quedan exentas de cualquier otro impuesto.',
+        'Railway companies may import the materials to build their tracks duty-free until 1947. In exchange, they pay a single contribution of 3 % of their railway earnings, used to build roads to the stations, and are exempt from any other tax.',
+      ),
     fuente: {
-      nombre: 'Ley 5315',
+      nombre: t('Ley 5315', 'Law 5315'),
       url: 'https://www.argentina.gob.ar/normativa/nacional/ley-5315-175380/texto',
     },
   },
   '1955': {
-    titulo: 'El máximo',
-    texto: (d) => `La red con trenes de pasajeros llega a su mayor extensión, ${d.kmPico} km.`,
+    titulo: t('El máximo', 'The peak'),
+    texto: (d) =>
+      t(
+        `La red con trenes de pasajeros llega a su mayor extensión, ${d.kmPico} km.`,
+        `The passenger rail network reaches its greatest extent, ${d.kmPico} km.`,
+      ),
   },
   '1961': {
-    titulo: 'El Plan Larkin',
+    titulo: t('El Plan Larkin', 'The Larkin Plan'),
     texto: (d) =>
-      `El gobierno de Frondizi propone desactivar más de la mitad de la red, y los ferroviarios responden con una huelga de 42 días. Ese año cierran ${d.cerradas(1961)} estaciones.`,
+      t(
+        `El gobierno de Frondizi propone desactivar más de la mitad de la red, y los ferroviarios responden con una huelga de 42 días. Ese año cierran ${d.cerradas(1961)} estaciones.`,
+        `The Frondizi government proposes shutting down more than half of the network, and railway workers respond with a 42-day strike. That year, ${d.cerradas(1961)} stations close.`,
+      ),
     fuente: {
-      nombre: 'Decreto 4061/61, Boletín Oficial del 30 de mayo de 1961',
+      nombre: t(
+        'Decreto 4061/61, Boletín Oficial del 30 de mayo de 1961',
+        'Decree 4061/61, Official Gazette of May 30, 1961',
+      ),
       url: 'https://archive.org/details/Boletin_Oficial_Republica_Argentina_1ra_seccion_1961-05-30',
     },
   },
   '1977': {
-    titulo: 'El cierre más grande',
+    titulo: t('El cierre más grande', 'The biggest closure'),
     texto: (d) =>
-      `Entre 1977 y 1979, el gobierno militar cierra o levanta cerca de 6.000 km de vías. En 1977 cierran ${d.cerradas(1977)} estaciones, más que en cualquier otro año.`,
+      t(
+        `Entre 1977 y 1979, el gobierno militar cierra o levanta cerca de 6.000 km de vías. En 1977 cierran ${d.cerradas(1977)} estaciones, más que en cualquier otro año.`,
+        `Between 1977 and 1979, the military government closes or tears up about 6,000 km of track. In 1977, ${d.cerradas(1977)} stations close, more than in any other year.`,
+      ),
   },
   '1993': {
-    titulo: 'Sin larga distancia',
+    titulo: t('Sin larga distancia', 'No more long distance'),
     texto: (d) =>
-      `Se suprimen los trenes de pasajeros de larga distancia de Ferrocarriles Argentinos. La provincia que quiera conservar uno tiene que cubrir todo su déficit. Ese año cierran ${d.cerradas(1993)} estaciones.`,
+      t(
+        `Se suprimen los trenes de pasajeros de larga distancia de Ferrocarriles Argentinos. La provincia que quiera conservar uno tiene que cubrir todo su déficit. Ese año cierran ${d.cerradas(1993)} estaciones.`,
+        `Ferrocarriles Argentinos' long-distance passenger trains are discontinued. Any province that wants to keep one must cover its entire deficit. That year, ${d.cerradas(1993)} stations close.`,
+      ),
     fuente: {
-      nombre: 'Decreto 1168/92',
+      nombre: t('Decreto 1168/92', 'Decree 1168/92'),
       url: 'https://www.argentina.gob.ar/normativa/nacional/norma-9199/texto',
     },
   },
   gente: {
-    titulo: 'Cada vez más lejos',
+    titulo: t('Cada vez más lejos', 'Farther and farther away'),
     texto: (d) =>
-      `En el censo de ${d.primerCenso}, el ${d.conTren.primero} % de la gente vivía a menos de 10 km de una estación con trenes de pasajeros. En el de ${d.ultimoCenso}, solo el ${d.conTren.ultimo} %.`,
+      t(
+        `En el censo de ${d.primerCenso}, el ${d.conTren.primero} % de la gente vivía a menos de 10 km de una estación con trenes de pasajeros. En el de ${d.ultimoCenso}, solo el ${d.conTren.ultimo} %.`,
+        `In the ${d.primerCenso} census, ${d.conTren.primero} % of people lived less than 10 km from a station with passenger trains. In ${d.ultimoCenso}, only ${d.conTren.ultimo} %.`,
+      ),
   },
   provincias: {
-    titulo: 'Provincia por provincia',
+    titulo: t('Provincia por provincia', 'Province by province'),
     texto: (d) =>
-      `En ${d.ultimoCenso}, en ${d.provincias.primera} el ${d.provincias.porcentajePrimera} % de la gente vivía cerca de un tren de pasajeros. En ${d.provincias.sinPasajeros} de las ${d.provincias.total} provincias, nadie.`,
+      t(
+        `En ${d.ultimoCenso}, en ${d.provincias.primera} el ${d.provincias.porcentajePrimera} % de la gente vivía cerca de un tren de pasajeros. En ${d.provincias.sinPasajeros} de las ${d.provincias.total} provincias, nadie.`,
+        `In ${d.ultimoCenso}, ${d.provincias.porcentajePrimera} % of people in ${d.provincias.primera} lived near a passenger train. In ${d.provincias.sinPasajeros} of the ${d.provincias.total} provinces, nobody did.`,
+      ),
   },
   actualidad: {
-    titulo: 'Hoy',
+    titulo: t('Hoy', 'Today'),
     texto: (d) =>
-      `De cada 100 km de vía que se construyeron, hoy ${d.porcentajeHoy[0]} llevan trenes de pasajeros, ${d.porcentajeHoy[1]} solo trenes de carga y ${d.porcentajeHoy[2]} están sin trenes. Los otros ${d.porcentajeHoy[3]} fueron levantados.`,
+      t(
+        `De cada 100 km de vía que se construyeron, hoy ${d.porcentajeHoy[0]} llevan trenes de pasajeros, ${d.porcentajeHoy[1]} solo trenes de carga y ${d.porcentajeHoy[2]} están sin trenes. Los otros ${d.porcentajeHoy[3]} fueron levantados.`,
+        `Of every 100 km of track ever built, today ${d.porcentajeHoy[0]} carry passenger trains, ${d.porcentajeHoy[1]} carry only freight trains and ${d.porcentajeHoy[2]} have no trains at all. The other ${d.porcentajeHoy[3]} have been torn up.`,
+      ),
   },
 };
-
-function miles(valor: number): string {
-  return Math.round(valor).toLocaleString('es-AR');
-}
 
 // Los porcentajes redondeados de varias partes, corregidos para que sumen 100: la diferencia del
 // redondeo va a la parte más grande.
@@ -245,7 +273,7 @@ function calcularCifras(datos: Datos): Cifras {
             <p class="texto">{{ tarjeta.texto.texto(d) }}</p>
             @if (tarjeta.texto.fuente; as fuente) {
               <p class="fuente">
-                Fuente:
+                {{ EN ? 'Source:' : 'Fuente:' }}
                 <a class="underline" [href]="fuente.url" target="_blank" rel="noopener">{{
                   fuente.nombre
                 }}</a
@@ -261,6 +289,7 @@ function calcularCifras(datos: Datos): Cifras {
 export class Relato {
   private readonly carga = inject(CargaDatos);
   private readonly estado = inject(EstadoApp);
+  protected readonly EN = EN;
   private readonly elemento = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly tamanio = signal({ ancho: 0, alto: 0 }); // px
 

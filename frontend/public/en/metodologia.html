@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources and Methodology · The network that went dark</title>
+<link rel="icon" type="image/webp" href="../favicon.webp">
+<style>
+  /* La versión en inglés de public/metodologia.html, con los mismos estilos: si se cambia una,
+     hay que cambiar la otra. Está en en/, así que los archivos compartidos se piden a la carpeta
+     de arriba. */
+  @font-face { font-family: 'Courier Prime'; font-weight: 400; font-display: swap; src: url('../tipografia/courier-prime-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Courier Prime'; font-weight: 700; font-display: swap; src: url('../tipografia/courier-prime-latin-700-normal.woff2') format('woff2'); }
+  :root {
+    --carton: #ede4d3;
+    --talon: #d7c9b5;
+    --tinta: #2b2b2b;
+    --oxido: #b5533c;
+    --violeta: #4a3aa7;
+    --mesa: #2f2a26;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 24px; }
+  body {
+    margin: 0;
+    background: var(--carton) url('../texturas/papel-fibras-fuerte.webp');
+    color: var(--tinta);
+    font: 17px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  /* Una hoja lisa sobre el cartón, con un filete óxido a la izquierda que recuerda al talón desde
+     donde se llega. */
+  .hoja {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 48px 56px 64px;
+    background: #fbf8f2;
+    border-left: 6px solid rgb(181 83 60 / 0.55);
+  }
+  @media (max-width: 640px) {
+    .hoja { margin: 0; padding: 32px 16px 48px; border-left-width: 4px; }
+  }
+  h1, h2, h3, h4, .encabezado { font-family: 'Courier Prime', monospace; }
+  .encabezado {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .encabezado a { color: inherit; }
+  h1 { font-size: 2.5rem; line-height: 1.1; margin: 8px 0 32px; }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 3px double rgb(43 43 43 / 0.5);
+  }
+  h3 { font-size: 1.25rem; margin: 0 0 12px; }
+  h4 { font-size: 1rem; margin: 24px 0 8px; }
+  p, li { overflow-wrap: anywhere; }
+  code { font: 0.95em 'Courier Prime', monospace; }
+  a { color: var(--tinta); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--violeta); }
+  .indice { padding-left: 1.2em; margin: 8px 0 0; columns: 2; }
+  @media (max-width: 640px) { .indice { columns: 1; } }
+  .indice-general { columns: 1; margin: 0 0 40px; }
+  .links.acceso { margin-bottom: 32px; }
+  .titulo-indice { margin: 0; }
+  .seccion { margin-top: 56px; }
+  .ficha {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgb(43 43 43 / 0.15);
+  }
+  .links { margin: 4px 0 12px; padding-left: 1.2em; }
+  .bloque { position: relative; margin: 8px 0 12px; }
+  pre {
+    margin: 0;
+    padding: 12px 14px;
+    overflow-x: auto;
+    background: #f2ece1;
+    border: 1px solid rgb(43 43 43 / 0.15);
+    border-radius: 2px;
+    font: 0.8rem/1.45 'Courier Prime', monospace;
+  }
+  .figura { margin: 16px 0 20px; }
+  .figura a { display: block; }
+  .figura img { display: block; width: 100%; height: auto; border: 1px solid rgb(43 43 43 / 0.15); }
+  .figura figcaption { margin-top: 6px; font-size: 0.85rem; line-height: 1.45; opacity: 0.75; }
+  .notas > li { margin-bottom: 12px; }
+  button.copiar {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 1px 10px;
+    background: var(--carton);
+    color: var(--tinta);
+    border: 1px solid rgb(43 43 43 / 0.25);
+    border-radius: 2px;
+    font: 700 0.75rem 'Courier Prime', monospace;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+<p class="encabezado"><a href="./">The network that went dark</a></p>
+<h1>Sources and Methodology</h1>
+<p>The code and data are in the <a href="https://github.com/yi-yi-dev/La-red-que-se-apago" target="_blank" rel="noopener">project repository</a>. The processing lives in <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/tree/main/datasets_y_procesamiento_de_datos" target="_blank" rel="noopener">datasets_y_procesamiento_de_datos</a>, in notebooks that are run in order, and the app in <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/tree/main/frontend" target="_blank" rel="noopener">frontend</a>. The notebooks are written in Spanish.</p>
+<ul class="links acceso">
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/0_generacion_datasets.ipynb" target="_blank" rel="noopener">0_generacion_datasets.ipynb</a>: downloads the sources and describes each dataset and its columns.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/1_datos_centrales.ipynb" target="_blank" rel="noopener">1_datos_centrales.ipynb</a>: builds the track, dates it and classifies the people of each census.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/1bis_otras_formas_de_fechar.ipynb" target="_blank" rel="noopener">1bis_otras_formas_de_fechar.ipynb</a>: compares the nearest station with other ways of dating the track.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a>: analyzes the results and validates them against the ONDaT and real maps.</li>
+  <li><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/3_exportacion_frontend.ipynb" target="_blank" rel="noopener">3_exportacion_frontend.ipynb</a>: writes the data the app reads.</li>
+</ul>
+<h3 class="titulo-indice">Contents</h3>
+<ul class="indice indice-general">
+  <li><a href="#fuentes">Sources</a></li>
+  <li><a href="#metodologia">Methodology</a></li>
+</ul>
+
+<section id="fuentes">
+<h2>Sources</h2>
+<p>The app is built from six public databases: five feed the visualizations and the sixth, the ONDaT, serves as a check.</p>
+<ul class="indice">
+  <li><a href="#ide">Transport SDI (IDE de Transporte)</a></li>
+  <li><a href="#osm">OpenStreetMap</a></li>
+  <li><a href="#wikidata">Wikidata</a></li>
+  <li><a href="#indec">INDEC</a></li>
+  <li><a href="#ign">IGN</a></li>
+  <li><a href="#ondat">ONDaT</a></li>
+</ul>
+
+<article class="ficha" id="ide">
+<h3>Transport SDI (IDE de Transporte)</h3>
+<p>Argentina&rsquo;s national Transport Secretariat publishes two GeoJSON layers in its Spatial Data Infrastructure (IDE). The railway layer has track sections with their route, their current status (active or not operational) and their stated length in km. The stations layer has the stations that were built, with their name and position.</p>
+<h4>Download</h4>
+<ul class="links">
+  <li><a href="https://ide.transporte.gob.ar/geoserver/idera/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;outputFormat=application%2Fjson&amp;typeName=idera:Ferrocarril" target="_blank" rel="noopener">The track</a></li>
+  <li><a href="https://ide.transporte.gob.ar/geoserver/idera/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;outputFormat=application%2Fjson&amp;typeName=idera:Estacion_Ferroviaria" target="_blank" rel="noopener">The stations</a></li>
+</ul>
+<h4>In the repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/Ferrocarril.geojson.zip" target="_blank" rel="noopener"><code>Ferrocarril.geojson</code></a> and <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/Estacion_Ferroviaria.geojson.zip" target="_blank" rel="noopener"><code>Estacion_Ferroviaria.geojson</code></a></p>
+<h4>License</h4>
+<p>None is named, but the server declares free and unrestricted access.</p>
+</article>
+
+<article class="ficha" id="osm">
+<h3>OpenStreetMap</h3>
+<p>Two OpenStreetMap queries, through the Overpass API. The first returns unused track sections in Argentina, with their route and status (disused, abandoned, razed or dismantled). The second returns train routes, with the tracks each one runs on and the type of service (passenger or not).</p>
+<h4>Download</h4>
+<p>Each link runs its query and may take several minutes. The app&rsquo;s data was downloaded in October 2026.</p>
+<ul class="links">
+  <li><a href="https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A10000%5D%3B%0Aarea%5B%22ISO3166-1%22%3D%22AR%22%5D%5Badmin_level%3D2%5D-%3E.a%3B%0A%28%0A%20%20way%5B%22railway%22%3D%22abandoned%22%5D%28area.a%29%3B%0A%20%20way%5B%22railway%22%3D%22disused%22%5D%28area.a%29%3B%0A%20%20way%5B%22railway%22%3D%22razed%22%5D%28area.a%29%3B%0A%20%20way%5B%22railway%22%3D%22dismantled%22%5D%28area.a%29%3B%0A%29%3B%0Aout%20geom%3B" target="_blank" rel="noopener">Unused track</a></li>
+</ul>
+<div class="bloque"><button class="copiar">copy</button><pre>[out:json][timeout:10000];
+area["ISO3166-1"="AR"][admin_level=2]-&gt;.a;
+(
+  way["railway"="abandoned"](area.a);
+  way["railway"="disused"](area.a);
+  way["railway"="razed"](area.a);
+  way["railway"="dismantled"](area.a);
+);
+out geom;</pre></div>
+<ul class="links">
+  <li><a href="https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A10000%5D%3B%0Arelation%5B%22route%22%3D%22train%22%5D%28-55.1%2C-73.6%2C-21.7%2C-53.6%29%3B%0Aout%20geom%3B" target="_blank" rel="noopener">Train routes</a></li>
+</ul>
+<div class="bloque"><button class="copiar">copy</button><pre>[out:json][timeout:10000];
+relation["route"="train"](-55.1,-73.6,-21.7,-53.6);
+out geom;</pre></div>
+<p>If a link fails, the query can be run by hand on <a href="https://overpass-turbo.eu/" target="_blank" rel="noopener">overpass-turbo.eu</a> (export as raw OSM data).</p>
+<h4>In the repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/osm_rail_abandoned.json.zip" target="_blank" rel="noopener"><code>osm_rail_abandoned.json</code></a> and <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/osm_rutas_tren.json.zip" target="_blank" rel="noopener"><code>osm_rutas_tren.json</code></a></p>
+<h4>License</h4>
+<p><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Open Database License (ODbL)</a>.</p>
+</article>
+
+<article class="ficha" id="wikidata">
+<h3>Wikidata</h3>
+<p>Wikidata, the Wikimedia Foundation&rsquo;s open database, has Argentina&rsquo;s train stations. For each one it gives the name and (when available) the geographic position, the opening or construction date, and the closing date.</p>
+<h4>Download</h4>
+<p>Run this query on <a href="https://query.wikidata.org/" target="_blank" rel="noopener">query.wikidata.org</a>. The app&rsquo;s data was downloaded in October 2026.</p>
+<div class="bloque"><button class="copiar">copy</button><pre>SELECT ?st ?stLabel ?coord ?opened ?closed ?inception WHERE {
+  ?st wdt:P31/wdt:P279* wd:Q55488 .   # is a train station (or subclass)
+  ?st wdt:P17 wd:Q414 .               # country = Argentina
+  OPTIONAL { ?st wdt:P625  ?coord }     # coordinates
+  OPTIONAL { ?st wdt:P1619 ?opened }    # opened to the public
+  OPTIONAL { ?st wdt:P3999 ?closed }    # official closure
+  OPTIONAL { ?st wdt:P571  ?inception } # construction
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "es,en". }
+}</pre></div>
+<h4>In the repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/wikidata_estaciones.csv.zip" target="_blank" rel="noopener"><code>wikidata_estaciones.csv</code></a></p>
+<h4>License</h4>
+<p>Public domain, under <a href="https://www.wikidata.org/wiki/Wikidata:Licensing" target="_blank" rel="noopener">Creative Commons Zero (CC0)</a>.</p>
+</article>
+
+<article class="ficha" id="indec">
+<h3>INDEC</h3>
+<p>The census tracts (radios censales) of 1991, 2001, 2010 and 2022, published by INDEC, Argentina&rsquo;s national statistics institute. Each tract has its polygon, its province and department codes, its population and its dwellings.</p>
+<h4>Download</h4>
+<ul class="links">
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.10/download/radios-censales-1991.csv">1991 census</a></li>
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.7/download/radios-censales-2001.csv">2001 census</a></li>
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.4/download/radios-censales-2010.csv">2010 census</a></li>
+  <li><a href="https://infra.datos.gob.ar/catalog/indec/dataset/50/distribution/50.1/download/radios-censales-2022.csv">2022 census</a></li>
+</ul>
+<h4>In the repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios1991.csv.zip" target="_blank" rel="noopener"><code>radios1991.csv</code></a>, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios2001.csv.zip" target="_blank" rel="noopener"><code>radios2001.csv</code></a>, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios2010.csv.zip" target="_blank" rel="noopener"><code>radios2010.csv</code></a> and <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/radios2022.csv.zip" target="_blank" rel="noopener"><code>radios2022.csv</code></a></p>
+<h4>License</h4>
+<p><a href="https://datos.gob.ar/dataset/radios-censales-censos-1991-a-2022" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>.</p>
+</article>
+
+<article class="ficha" id="ign">
+<h3>IGN</h3>
+<p>The National Geographic Institute (Instituto Geográfico Nacional) publishes the polygons of the 24 provinces.</p>
+<h4>Download</h4>
+<ul class="links">
+  <li><a href="https://wms.ign.gob.ar/geoserver/ows?service=WFS&amp;version=2.0.0&amp;request=GetFeature&amp;typeNames=ign:provincia&amp;outputFormat=application/json">GeoJSON of the provinces</a></li>
+</ul>
+<h4>In the repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/ign_provincia.json.zip" target="_blank" rel="noopener"><code>ign_provincia.json</code></a></p>
+<h4>License</h4>
+<p>Its <a href="https://www.ign.gob.ar/descargas/tyc1.html" target="_blank" rel="noopener">terms of use</a> require crediting the IGN as author and sharing the information freely and at no cost.</p>
+</article>
+
+<article class="ficha" id="ondat">
+<h3>ONDaT</h3>
+<p>The National Transport Data Observatory (Observatorio Nacional de Datos de Transporte, part of UTN) publishes a spreadsheet with the annual series of km of railway network in service, up to 2000. The app doesn&rsquo;t use it directly in the visualizations, but it serves as a check that the km reconstructed year by year follow the official curve.</p>
+<h4>Download</h4>
+<ul class="links">
+  <li><a href="https://ondat.c3t-utn.ar/wp-content/uploads/2015/08/Transporte-Ferroviario.-Datos-generales-hist%C3%B3ricos-062015.xls">Excel spreadsheet</a></li>
+</ul>
+<h4>In the repo</h4>
+<p><a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/data/raw/ondat_ffcc_hist.xls.zip" target="_blank" rel="noopener"><code>ondat_ffcc_hist.xls</code></a></p>
+<h4>License</h4>
+<p><a href="https://ondat.c3t-utn.ar/?p=1263" target="_blank" rel="noopener">The series&rsquo; page</a> doesn&rsquo;t state one.</p>
+</article>
+</section>
+
+<section id="metodologia" class="seccion">
+<h2>Methodology</h2>
+<p>The analysis, processing and exploration of the data were done in Python, before developing the app. The code is in the <a href="https://github.com/yi-yi-dev/La-red-que-se-apago" target="_blank" rel="noopener">[repo]</a>.</p>
+<ul class="indice">
+  <li><a href="#motivacion">Motivation</a></li>
+  <li><a href="#generar">How the data was generated</a></li>
+  <li><a href="#validar">How it was validated</a></li>
+  <li><a href="#notas">Final notes</a></li>
+  <li><a href="#app">From the analysis to the app</a></li>
+  <li><a href="#ia">Use of artificial intelligence</a></li>
+</ul>
+
+<article class="ficha" id="motivacion">
+<h3>Motivation</h3>
+<p>The idea was to see how Argentina&rsquo;s railway network evolved throughout its history (when it grew, when it went dark and who it left without a train). What you can find are maps and scattered data for some years, but nothing complete from the start of the network to the present. So we had to generate that data from what is published, and then validate the generated data.</p>
+</article>
+
+<article class="ficha" id="generar">
+<h3>How the data was generated</h3>
+<figure class="figura"><a href="../metodologia/diagrama_pipeline.webp" target="_blank" rel="noopener"><img src="../metodologia/diagrama_pipeline.webp" width="3380" height="2000" loading="lazy" alt="Diagram of the data pipeline: from the sources downloaded by 0_generacion_datasets to the steps of 1_datos_centrales, grouped by the question of the app they answer (labels in Spanish)"></a><figcaption>The data pipeline, from the sources (<code>0_generacion_datasets</code>) to their processing (<code>1_datos_centrales</code>). Labels in Spanish.</figcaption></figure>
+<p>No source has the network for every year, but each one contributes a different piece. The track comes from two maps: the government&rsquo;s has the track that exists today and OpenStreetMap adds the track that was torn up. The dates come from Wikidata&rsquo;s stations: each section of track takes the opening and closing year of the nearest station that has them. With those two dates and the current status of each section (passenger, freight, inactive or torn up), the network of any year from 1857 to 2025 can be rebuilt.</p>
+<p>For the people, each INDEC census tract is classified according to the stations within 10 km: with passenger trains, freight only, lost the train or never had a train. This is done with the network of each census year, from 1991 to 2022.</p>
+</article>
+
+<article class="ficha" id="validar">
+<h3>How it was validated</h3>
+<h4>Against the official series</h4>
+<p>The ONDaT publishes the km of network in service for each year up to 2000. That series was not used for dating (to avoid overfitting) and served mostly as a check.</p>
+<figure class="figura"><a href="../metodologia/control_ondat.webp" target="_blank" rel="noopener"><img src="../metodologia/control_ondat.webp" width="842" height="505" loading="lazy" alt="Reconstructed km in service against the ONDaT series, and their ratio"></a><figcaption>Top: the reconstructed km in service (green) and the ONDaT&rsquo;s (gray); bottom: their ratio. The vertical lines are 1961, 1977 and 1993.</figcaption></figure>
+<h4>Against real maps</h4>
+<p>The generated present-day network was compared with the most recent maps that could be found. The track in service follows the same corridors as a 2026 map of operating corridors (<a href="https://x.com/GGertino/status/1940247940452536692" target="_blank" rel="noopener">source</a>). Against a 2021 map (<a href="https://www.reddit.com/r/argentina/comments/mbkvuu/mapa_de_la_red_ferroviaria_de_argentina_2021/" target="_blank" rel="noopener">source</a>) that uses the same four categories, the difference is almost entirely in passenger track, since several services have been suspended since then; <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a> lists each one with the news report that confirms it.</p>
+<figure class="figura"><a href="../metodologia/corredores_2026.webp" target="_blank" rel="noopener"><img src="../metodologia/corredores_2026.webp" width="898" height="747" loading="lazy" alt="The generated track in service for 2025 next to a 2026 map of operating corridors"></a><figcaption>Left: the generated track in service; right: the 2026 map of operating corridors (<a href="https://x.com/GGertino/status/1940247940452536692" target="_blank" rel="noopener">source</a>). From <code>2_analisis</code>.</figcaption></figure>
+<figure class="figura"><a href="../metodologia/mapa_2021.webp" target="_blank" rel="noopener"><img src="../metodologia/mapa_2021.webp" width="1035" height="790" loading="lazy" alt="The four generated categories for 2025 next to a 2021 map with the same categories"></a><figcaption>Left: the four categories generated for 2025; right: a 2021 map with the same ones (<a href="https://www.reddit.com/r/argentina/comments/mbkvuu/mapa_de_la_red_ferroviaria_de_argentina_2021/" target="_blank" rel="noopener">source</a>). From <code>2_analisis</code>.</figcaption></figure>
+<h4>Why the nearest station</h4>
+<p>Machine learning models that learn the year from the position were also tried. Beyond their error, they smooth the curve a lot, and the sudden closures of 1961, 1977 and 1993 are lost. The nearest station is the simplest to explain and the one that best follows the official curve.</p>
+<figure class="figura"><a href="../metodologia/comparacion_metodos_fechado.webp" target="_blank" rel="noopener"><img src="../metodologia/comparacion_metodos_fechado.webp" width="2000" height="1125" loading="lazy" alt="The km of network of each dating method against the ONDaT series"></a><figcaption>Each dating method against the ONDaT (gray), with its validation error on the stations, its error against the ONDaT and how closely its changes follow the official ones. From <code>1bis_otras_formas_de_fechar</code>.</figcaption></figure>
+<p>Two examples, on a grid covering the whole country: the opening year, the closing year and the difference between the two that each place would get, along with its curve against the ONDaT.</p>
+<figure class="figura"><a href="../metodologia/fechado_1_vecino.webp" target="_blank" rel="noopener"><img src="../metodologia/fechado_1_vecino.webp" width="1573" height="617" loading="lazy" alt="Opening year, closing year and their difference using the nearest station, on a grid covering the whole country, and its curve against the ONDaT"></a><figcaption>The nearest station, the chosen method. From <code>1bis_otras_formas_de_fechar</code>.</figcaption></figure>
+<figure class="figura"><a href="../metodologia/fechado_red_neuronal.webp" target="_blank" rel="noopener"><img src="../metodologia/fechado_red_neuronal.webp" width="1573" height="617" loading="lazy" alt="Opening year, closing year and their difference using a neural network, on a grid covering the whole country, and its curve against the ONDaT"></a><figcaption>A neural network. From <code>1bis_otras_formas_de_fechar</code>.</figcaption></figure>
+</article>
+
+<article class="ficha" id="notas">
+<h3>Final notes</h3>
+<ul class="notas">
+  <li>The result is an open, georeferenced, year-by-year reconstruction of Argentina&rsquo;s railway network from 1857 to 2025, with the status of each section and cross-referenced with the people of four censuses. Until now, that history was told with maps or scattered data; with continuous data you can watch the network grow and go dark across the territory.</li>
+  <li>The track dates are estimates, and closing dates are coarser than opening dates because Wikidata has fewer of them. There is no date for when track was torn up, all track starts out with passenger service, and each section has only one change.</li>
+  <li>Other results that were not used in the app:
+    <h4>Where each category lives</h4>
+    <p>Ranking people by the density of the place where they live, those who never had a train cluster in the most rural tracts, while those who lost the train or only have freight live in the towns and small cities in between.</p>
+    <figure class="figura"><a href="../metodologia/densidad.webp" target="_blank" rel="noopener"><img src="../metodologia/densidad.webp" width="842" height="448" loading="lazy" alt="Share of each category living in each density decile of the census tract"></a><figcaption>The share of each category living in each tenth of the population, from the most rural tract to the densest. From <code>2_analisis</code>.</figcaption></figure>
+    <h4>Other ways of showing the people</h4>
+    <p>Alternative ways of showing the people on the map were explored, such as equal 50 km hexagons, which don&rsquo;t depend on department boundaries.</p>
+    <figure class="figura"><a href="../metodologia/hexagonos_color.gif" target="_blank" rel="noopener"><img src="../metodologia/hexagonos_color.gif" width="1120" height="743" loading="lazy" alt="People in each category in 50 km hexagons, with population as color, census by census"></a><figcaption>50 km hexagons with population as color, one frame per census. From <code>2_analisis</code>.</figcaption></figure>
+    <figure class="figura"><a href="../metodologia/hexagonos_area.gif" target="_blank" rel="noopener"><img src="../metodologia/hexagonos_area.gif" width="1120" height="743" loading="lazy" alt="People in each category in 50 km hexagons, with population as size, census by census"></a><figcaption>The same hexagons with population as size. From <code>2_analisis</code>.</figcaption></figure>
+    <h4>Holding population fixed to see how it changes with historical track</h4>
+    <p>If you hold the people of one census fixed and lay the network of each year over them, you can see how much of the change comes from the tracks rather than from where people live.</p>
+    <figure class="figura"><a href="../metodologia/poblacion_fija.webp" target="_blank" rel="noopener"><img src="../metodologia/poblacion_fija.webp" width="774" height="438" loading="lazy" alt="Percentage of the people of each census with a passenger train within 10 km, with the network of each year from 1857 to 2025"></a><figcaption>The people of each census with the network of each year. The vertical lines are 1961, 1977 and 1993. From <code>2_analisis</code>.</figcaption></figure>
+  </li>
+</ul>
+</article>
+
+<article class="ficha" id="app">
+<h3>From the analysis to the app</h3>
+<p>All the analysis was done in Python, in notebooks that are run in order: <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/0_generacion_datasets.ipynb" target="_blank" rel="noopener">0_generacion_datasets.ipynb</a> downloads the sources, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/1_datos_centrales.ipynb" target="_blank" rel="noopener">1_datos_centrales.ipynb</a> processes them, <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/2_analisis.ipynb" target="_blank" rel="noopener">2_analisis.ipynb</a> analyzes and validates, and <a href="https://github.com/yi-yi-dev/La-red-que-se-apago/blob/main/datasets_y_procesamiento_de_datos/3_exportacion_frontend.ipynb" target="_blank" rel="noopener">3_exportacion_frontend.ipynb</a> writes the data for the app.</p>
+</article>
+
+<article class="ficha" id="ia">
+<h3>Use of artificial intelligence</h3>
+<p>Claude Code (Opus 5.5) was used to:</p>
+<ul>
+  <li>Make it easier to find public datasets useful for the analysis.</li>
+  <li>Assist in generating Python code for exploring and analyzing the data, always with human supervision and intervention.</li>
+  <li>Assist in generating TypeScript and Angular code for developing the app, always with human supervision and intervention.</li>
+  <li>Assist in writing the texts. The ideas, the approach and the decisions on data, method and design are my own.</li>
+  <li>Translate the app and this page into English.</li>
+</ul>
+</article>
+</section>
+
+</main>
+<script>
+  for (const boton of document.querySelectorAll('button.copiar')) {
+    boton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(boton.nextElementSibling.textContent);
+        boton.textContent = 'copied';
+      } catch (e) {
+        boton.textContent = 'failed';
+      }
+      setTimeout(() => { boton.textContent = 'copy'; }, 1500);
+    });
+  }
+</script>
+</body>
+</html>

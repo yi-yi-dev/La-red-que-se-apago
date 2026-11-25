@@ -14,6 +14,7 @@ import * as d3 from 'd3';
 import { CargaDatos, Datos } from './datos';
 import { Diseno, SANGRIA_EJE } from './diseno';
 import { CHECKPOINTS, EstadoApp, opacidadDesde, opacidadHasta, ultimoNoNulo } from './estado';
+import { METODOLOGIA, t, unDecimal } from './idioma';
 
 const INDICE_GENTE = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'gente');
 const INDICE_PROVINCIAS = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'provincias');
@@ -70,10 +71,10 @@ function entre(a: number, b: number, t: number): number {
 // Las categorías de censos.json, de abajo hacia arriba, con el color de su vía en el mapa; la gente
 // que nunca tuvo tren no tiene vía y va en gris.
 const CATEGORIAS = [
-  { nombre: 'Con tren de pasajeros', clase: 'pasajeros' },
-  { nombre: 'Solo tren de carga', clase: 'carga' },
-  { nombre: 'Perdió el tren', clase: 'perdio' },
-  { nombre: 'Nunca tuvo tren', clase: 'sin-tren' },
+  { nombre: t('Con tren de pasajeros', 'With passenger trains'), clase: 'pasajeros' },
+  { nombre: t('Solo tren de carga', 'Freight trains only'), clase: 'carga' },
+  { nombre: t('Perdió el tren', 'Lost the train'), clase: 'perdio' },
+  { nombre: t('Nunca tuvo tren', 'Never had a train'), clase: 'sin-tren' },
 ];
 
 interface Segmento {
@@ -181,14 +182,23 @@ function redondeadosQueSuman100(partes: number[], total: number): number[] {
             [class.hidden]="tituloGente() === 0 && tituloProvincias() > 0"
           >
             <h2 class="text-2xl leading-tight font-bold max-md:text-xl xl:text-[1.75rem]">
-              ¿Quién vivía cerca de un tren en cada censo?
+              {{
+                t(
+                  '¿Quién vivía cerca de un tren en cada censo?',
+                  'Who lived near a train in each census?'
+                )
+              }}
             </h2>
             <p
               class="mt-1 text-sm leading-snug max-md:text-xs"
               [style.max-width.px]="x1() - x0() + SANGRIA_EJE"
             >
-              Qué parte de la gente vivía a menos de 10 km de una estación de tren, y qué trenes
-              pasaban por ella, con las vías que había el año de cada censo.
+              {{
+                t(
+                  'Qué parte de la gente vivía a menos de 10 km de una estación de tren, y qué trenes pasaban por ella, con las vías que había el año de cada censo.',
+                  'The share of people living less than 10 km from a train station, and which trains stopped there, using the tracks that existed in each census year.'
+                )
+              }}
             </p>
           </div>
           <div
@@ -197,14 +207,20 @@ function redondeadosQueSuman100(partes: number[], total: number): number[] {
             [class.hidden]="tituloProvincias() === 0"
           >
             <h2 class="text-2xl leading-tight font-bold max-md:text-xl xl:text-[1.75rem]">
-              ¿Y en cada provincia?
+              {{ t('¿Y en cada provincia?', 'And in each province?') }}
             </h2>
             <p
               class="mt-1 text-sm leading-snug max-md:text-xs"
               [style.max-width.px]="x1() - x0() + SANGRIA_EJE"
             >
-              Los mismos datos que la barra del censo de {{ ultimoCenso() }}, provincia por
-              provincia.
+              {{
+                t(
+                  'Los mismos datos que la barra del censo de ' +
+                    ultimoCenso() +
+                    ', provincia por provincia.',
+                  'The same data as the ' + ultimoCenso() + ' census bar, province by province.'
+                )
+              }}
             </p>
           </div>
         </div>
@@ -213,16 +229,17 @@ function redondeadosQueSuman100(partes: number[], total: number): number[] {
           [style.opacity]="0.6 * (tituloGente() + tituloProvincias())"
           [style.max-width.px]="x1() - x0() + SANGRIA_EJE"
         >
-          Fuentes:
-          <a class="underline" href="metodologia.html#indec" target="_blank" rel="noopener">INDEC</a
+          {{ t('Fuentes:', 'Sources:') }}
+          <a class="underline" [href]="METODOLOGIA + '#indec'" target="_blank" rel="noopener"
+            >INDEC</a
           >,
-          <a class="underline" href="metodologia.html#ide" target="_blank" rel="noopener"
-            >IDE de Transporte</a
-          >
-          y
-          <a class="underline" href="metodologia.html#osm" target="_blank" rel="noopener"
+          <a class="underline" [href]="METODOLOGIA + '#ide'" target="_blank" rel="noopener">{{
+            t('IDE de Transporte', 'Transport SDI')
+          }}</a>
+          {{ t('y', 'and') }}
+          <a class="underline" [href]="METODOLOGIA + '#osm'" target="_blank" rel="noopener"
             >© OpenStreetMap</a
-          >. Elaboración propia.
+          >. {{ t('Elaboración propia.', 'Own elaboration.') }}
         </p>
       </div>
       <!-- La leyenda, centrada sobre las barras: cada entrada prende o apaga su parte en todas. -->
@@ -267,7 +284,12 @@ function redondeadosQueSuman100(partes: number[], total: number): number[] {
           [style.left.px]="x0()"
           [style.width.px]="x1() - x0()"
         >
-          Tocá una parte de una barra para ver en el mapa dónde vive esa gente.
+          {{
+            t(
+              'Tocá una parte de una barra para ver en el mapa dónde vive esa gente.',
+              'Tap part of a bar to see on the map where those people live.'
+            )
+          }}
         </p>
         @if (fichaMostrada(); as a) {
           <div
@@ -394,6 +416,8 @@ export class SerieCensos {
   private animacion = 0;
   protected readonly categorias = CATEGORIAS;
   protected readonly SANGRIA_EJE = SANGRIA_EJE;
+  protected readonly METODOLOGIA = METODOLOGIA;
+  protected readonly t = t;
   protected readonly ANCHO_LEYENDA_COMPLETA = ANCHO_LEYENDA_COMPLETA;
   protected readonly ESPACIO_INDICACION = ESPACIO_INDICACION;
   protected readonly latiendo = computed(
@@ -564,8 +588,8 @@ export class SerieCensos {
         filas.unshift({
           clase: CATEGORIAS[segmento.categoria].clase,
           nombre: CATEGORIAS[segmento.categoria].nombre,
-          porcentaje: ((segmento.personas / total) * 100).toFixed(1).replace('.', ','),
-          personas: (segmento.personas / 1e6).toFixed(1).replace('.', ','),
+          porcentaje: unDecimal((segmento.personas / total) * 100),
+          personas: unDecimal(segmento.personas / 1e6),
         });
       }
     }
@@ -587,8 +611,8 @@ export class SerieCensos {
       filas.push({
         clase: CATEGORIAS[k].clase,
         nombre: CATEGORIAS[k].nombre,
-        porcentaje: ((provincia.personas[k] / total) * 100).toFixed(1).replace('.', ','),
-        personas: (provincia.personas[k] / 1e6).toFixed(1).replace('.', ','),
+        porcentaje: unDecimal((provincia.personas[k] / total) * 100),
+        personas: unDecimal(provincia.personas[k] / 1e6),
       });
     }
     const columna = Math.floor(orden / lugar.renglones);

@@ -1,4 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
+import { t } from './idioma';
 
 export interface Checkpoint {
   id: string;
@@ -8,20 +9,20 @@ export interface Checkpoint {
 }
 
 export const CHECKPOINTS: Checkpoint[] = [
-  { id: 'presentacion', etiqueta: 'Inicio', anio: null, duracionMs: 2000 },
+  { id: 'presentacion', etiqueta: t('Inicio', 'Start'), anio: null, duracionMs: 2000 },
   { id: '1857', etiqueta: '1857', anio: 1857, duracionMs: 3000 },
   { id: '1907', etiqueta: '1907', anio: 1907, duracionMs: 2000 },
   { id: '1955', etiqueta: '1955', anio: 1955, duracionMs: 900 }, // el máximo de vía con trenes de pasajeros
   { id: '1961', etiqueta: '1961', anio: 1961, duracionMs: 2500 },
   { id: '1977', etiqueta: '1977', anio: 1977, duracionMs: 2500 },
   { id: '1993', etiqueta: '1993', anio: 1993, duracionMs: 3000 },
-  { id: 'actualidad', etiqueta: 'Actualidad', anio: 2025, duracionMs: 2500 },
-  { id: 'gente', etiqueta: 'La gente', anio: null, duracionMs: 6000 }, // la gente de cada censo y su acceso al tren
+  { id: 'actualidad', etiqueta: t('Actualidad', 'Today'), anio: 2025, duracionMs: 2500 },
+  { id: 'gente', etiqueta: t('La gente', 'The people'), anio: null, duracionMs: 6000 }, // la gente de cada censo y su acceso al tren
   // La barra de 2022 se parte en las provincias: el tramo que llega acá es largo para que se lea.
-  { id: 'provincias', etiqueta: 'Provincias', anio: null, duracionMs: 2500 },
+  { id: 'provincias', etiqueta: t('Provincias', 'Provinces'), anio: null, duracionMs: 2500 },
   // El usuario edita la red; el tramo que sale de acá hace zoom hasta donde se sacaron las fotos.
-  { id: 'reconectar', etiqueta: 'Reconectar', anio: null, duracionMs: 3500 },
-  { id: 'fin', etiqueta: 'Fin', anio: null, duracionMs: 0 },
+  { id: 'reconectar', etiqueta: t('Reconectar', 'Reconnect'), anio: null, duracionMs: 3500 },
+  { id: 'fin', etiqueta: t('Fin', 'End'), anio: null, duracionMs: 0 },
 ];
 
 // Todos los fundidos entre checkpoints usan esta ventana, así lo que aparece en un checkpoint

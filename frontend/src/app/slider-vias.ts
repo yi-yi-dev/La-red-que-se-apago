@@ -1,6 +1,7 @@
 import { Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { Diseno } from './diseno';
 import { CHECKPOINTS, EstadoApp } from './estado';
+import { t } from './idioma';
 
 const UMBRAL_ARRASTRE_PX = 4; // menos que esto es un toque, no un arrastre
 // Las etiquetas van en Courier Prime de 12 px, que es monoespaciada: el ancho sale de las letras.
@@ -158,7 +159,7 @@ interface Arrastre {
       <div class="flex gap-10">
         <button
           class="cursor-pointer disabled:cursor-default disabled:opacity-30"
-          aria-label="Atrás"
+          [attr.aria-label]="t('Atrás', 'Back')"
           [disabled]="estado.posicion() <= 0"
           (click)="avanzar(-1)"
         >
@@ -168,7 +169,7 @@ interface Arrastre {
         </button>
         <button
           class="cursor-pointer disabled:cursor-default disabled:opacity-30"
-          aria-label="Adelante"
+          [attr.aria-label]="t('Adelante', 'Forward')"
           [class.llamando]="enInicio()"
           [disabled]="estado.posicion() >= ULTIMO"
           (click)="avanzar(1)"
@@ -183,7 +184,7 @@ interface Arrastre {
         [class.oculta]="!enInicio()"
         [style.width.px]="esCelular() ? diseno.anchoBoleto() / 2 - LUGAR_FLECHA_CELULAR : null"
       >
-        Empezá el viaje
+        {{ t('Empezá el viaje', 'Start the journey') }}
       </p>
     </div>
   `,
@@ -262,6 +263,7 @@ interface Arrastre {
 export class SliderVias {
   protected readonly estado = inject(EstadoApp);
   protected readonly checkpoints = CHECKPOINTS;
+  protected readonly t = t;
   protected readonly diseno = inject(Diseno);
   protected readonly ULTIMO = ULTIMO;
   protected readonly ANCHO_VIA_CELULAR = ANCHO_VIA_CELULAR;

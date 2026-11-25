@@ -2,6 +2,7 @@ import { afterNextRender, Component, computed, ElementRef, inject, viewChild } f
 import { ANCHO_TALON, Diseno } from './diseno';
 import { CHECKPOINTS, EstadoApp } from './estado';
 import { Homenaje } from './homenaje';
+import { METODOLOGIA, t } from './idioma';
 import { MapaArgentina } from './mapa-argentina';
 import { MapaFin } from './mapa-fin';
 import { MapaReconectar } from './mapa-reconectar';
@@ -147,7 +148,7 @@ function ultimoAnioDeLosCheckpoints(): number | null {
               [attr.aria-selected]="diseno.vistaCelular() === 'informacion'"
               (click)="diseno.vistaCelular.set('informacion')"
             >
-              Información
+              {{ t('Información', 'Information') }}
             </button>
             <button
               class="pestana"
@@ -156,7 +157,7 @@ function ultimoAnioDeLosCheckpoints(): number | null {
               [attr.aria-selected]="diseno.vistaCelular() === 'mapa'"
               (click)="diseno.vistaCelular.set('mapa')"
             >
-              Mapa
+              {{ t('Mapa', 'Map') }}
             </button>
           </div>
         </div>
@@ -176,9 +177,9 @@ function ultimoAnioDeLosCheckpoints(): number | null {
           <span
             class="absolute top-1/2 left-[calc(50%+8.5px)] flex -translate-x-1/2 -translate-y-1/2 -rotate-90 items-center gap-4 text-xs tracking-[0.3em] whitespace-nowrap uppercase opacity-60"
           >
-            Boleto
+            {{ t('Boleto', 'Ticket') }}
             <span class="size-1.5 rounded-full bg-tinta"></span>
-            Ida
+            {{ t('Ida', 'One way') }}
             <span class="w-8 border-t-2 border-dotted border-tinta"></span>
             {{ primerAnio }} – {{ ultimoAnio }}
           </span>
@@ -195,10 +196,10 @@ function ultimoAnioDeLosCheckpoints(): number | null {
           <!-- Centrado entre el filete y el borde oscuro (18 px), y leído de arriba hacia abajo. -->
           <a
             class="absolute top-1/2 left-[calc(50%-9px)] -translate-x-1/2 -translate-y-1/2 text-xs font-bold tracking-[0.3em] whitespace-nowrap uppercase underline underline-offset-4 opacity-70 [writing-mode:vertical-rl] hover:opacity-100"
-            href="metodologia.html"
+            [href]="METODOLOGIA"
             target="_blank"
             rel="noopener"
-            >Fuentes y Metodología</a
+            >{{ t('Fuentes y Metodología', 'Sources and Methodology') }}</a
           >
         </div>
         <!-- El filete queda tan lejos del borde derecho como la línea del talón del izquierdo. -->
@@ -312,7 +313,11 @@ function ultimoAnioDeLosCheckpoints(): number | null {
 
       <!-- Con el celular acostado no hay alto para el mapa ni para el gráfico: se pide girarlo. -->
       <div class="girar papel fixed inset-0 z-50 place-items-center bg-carton px-[15%] text-center">
-        <p class="text-xl leading-snug font-bold">Girá el teléfono para seguir el viaje</p>
+        <p class="text-xl leading-snug font-bold">
+          {{
+            t('Girá el teléfono para seguir el viaje', 'Rotate your phone to continue the journey')
+          }}
+        </p>
       </div>
 
       <!-- Manchas de humedad que entran desde las esquinas. -->
@@ -542,6 +547,8 @@ export class App {
   protected readonly ANCHO_TALON = ANCHO_TALON;
   protected readonly MARGEN_MAPA = MARGEN_MAPA;
   protected readonly AIRE_SELLO = AIRE_SELLO;
+  protected readonly METODOLOGIA = METODOLOGIA;
+  protected readonly t = t;
 
   // Desde la mitad del tramo que llega al checkpoint de la gente.
   protected readonly enGente = computed(() => this.estado.posicion() > INDICE_GENTE - 0.5);

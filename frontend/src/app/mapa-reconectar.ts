@@ -13,6 +13,7 @@ import {
 import * as d3 from 'd3';
 import { CargaDatos } from './datos';
 import { CHECKPOINTS, EstadoApp, opacidadDesde, opacidadHasta } from './estado';
+import { miles, t } from './idioma';
 import { bajoLeyendas, poligonosDelMapa, proyeccionDelMapa } from './mapa-argentina';
 import { CARGA, INACTIVA, PASAJEROS } from './modelo-reconectar';
 import { Herramienta, Reconexion } from './reconexion';
@@ -33,23 +34,37 @@ const VALORES_REFERENCIA = [50_000, 200_000, 500_000]; // personas; el departame
 const HERRAMIENTAS: { id: Herramienta; nombre: string; ayuda: string; color: string }[] = [
   {
     id: 'pintar',
-    nombre: 'Pintar',
-    ayuda: 'Pintá vías naranjas o rojas para que lleven pasajeros.',
+    nombre: t('Pintar', 'Paint'),
+    ayuda: t(
+      'Pintá vías naranjas o rojas para que lleven pasajeros.',
+      'Paint orange or red tracks so they carry passengers.',
+    ),
     color: 'var(--color-via-pasajeros)',
   },
   {
     id: 'borrar',
-    nombre: 'Borrar',
-    ayuda: 'Borrá lo pintado para dejar una vía como está hoy.',
+    nombre: t('Borrar', 'Erase'),
+    ayuda: t(
+      'Borrá lo pintado para dejar una vía como está hoy.',
+      'Erase your paint to leave a track as it is today.',
+    ),
     color: 'var(--color-tinta)',
   },
 ];
 
 // Las vías que se dibujan, de abajo hacia arriba: la levantada no se puede reactivar y no va.
 const CAPAS = [
-  { categoria: INACTIVA, nombre: 'Vía sin trenes', color: 'var(--color-via-inactiva)' },
-  { categoria: CARGA, nombre: 'Sólo carga', color: 'var(--color-via-carga)' },
-  { categoria: PASAJEROS, nombre: 'Con pasajeros', color: 'var(--color-via-pasajeros)' },
+  {
+    categoria: INACTIVA,
+    nombre: t('Vía sin trenes', 'Track without trains'),
+    color: 'var(--color-via-inactiva)',
+  },
+  { categoria: CARGA, nombre: t('Sólo carga', 'Freight only'), color: 'var(--color-via-carga)' },
+  {
+    categoria: PASAJEROS,
+    nombre: t('Con pasajeros', 'Passenger'),
+    color: 'var(--color-via-pasajeros)',
+  },
 ];
 
 interface Circulo extends d3.SimulationNodeDatum {
@@ -84,7 +99,7 @@ interface Circulo extends d3.SimulationNodeDatum {
         (pointerup)="soltar()"
         (pointercancel)="soltar()"
         (pointerleave)="cursorVisible.set(false)"
-        aria-label="Mapa para reconectar la red"
+        [attr.aria-label]="t('Mapa para reconectar la red', 'Map to reconnect the network')"
       >
         <g class="dorling" [style.opacity]="circulosVisibles() ? 1 : 0"></g>
         @for (capa of capas; track capa.categoria) {
@@ -143,7 +158,7 @@ interface Circulo extends d3.SimulationNodeDatum {
           }
           <button
             class="herramienta deshacer cursor-pointer disabled:cursor-default"
-            title="Deshacer el último cambio (Ctrl+Z)"
+            [title]="t('Deshacer el último cambio (Ctrl+Z)', 'Undo the last change (Ctrl+Z)')"
             [disabled]="!hayEdiciones()"
             (click)="reconexion.deshacer()"
           >
@@ -153,7 +168,7 @@ interface Circulo extends d3.SimulationNodeDatum {
               <path d="M9 14 4 9l5-5" />
               <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
             </svg>
-            <span class="etiqueta">Deshacer</span>
+            <span class="etiqueta">{{ t('Deshacer', 'Undo') }}</span>
           </button>
         </div>
         <!-- La leyenda prende y apaga cada capa del mapa, como la de los años. -->
@@ -189,9 +204,12 @@ interface Circulo extends d3.SimulationNodeDatum {
                 </span>
               }
             </span>
-            <span class="text-[10px] leading-tight"
-              >Personas sin un tren de pasajeros a menos de 10 km, por departamento</span
-            >
+            <span class="text-[10px] leading-tight">{{
+              t(
+                'Personas sin un tren de pasajeros a menos de 10 km, por departamento',
+                'People without a passenger train within 10 km, by department'
+              )
+            }}</span>
           </button>
         </div>
       </div>
@@ -310,6 +328,7 @@ export class MapaReconectar {
   private readonly tamanio = signal({ ancho: 0, alto: 0 }); // px
   protected readonly herramientas = HERRAMIENTAS;
   protected readonly capas = CAPAS;
+  protected readonly t = t;
   protected readonly RADIO_PINCEL = RADIO_PINCEL;
   protected readonly herramienta = this.reconexion.herramienta;
   protected readonly cursorVisible = signal(false);
@@ -407,7 +426,7 @@ export class MapaReconectar {
     const radio = this.radio();
     const circulos = [];
     for (const valor of VALORES_REFERENCIA) {
-      circulos.push({ r: radio(valor), texto: valor.toLocaleString('es-AR') });
+      circulos.push({ r: radio(valor), texto: miles(valor) });
     }
     return circulos;
   });

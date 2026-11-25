@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { Diseno } from './diseno';
 import { CHECKPOINTS, EstadoApp, opacidadDesde, ultimoNoNulo } from './estado';
+import { t } from './idioma';
 
 const INDICE_FIN = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'fin');
 const UMBRAL_ARRASTRE_PX = 4; // menos que esto es un toque, que da media vuelta, no un arrastre
@@ -24,8 +25,14 @@ export const FOTOS_FIN = [
     ancho: 900,
     alto: 551,
     lugar: 'Dock Sud',
-    alt: 'Diez trabajadores posan sobre rieles apilados, frente a unos galpones.',
-    dorso: 'Atrás, a mano: Doc Sud, Ria Chuelo, Casa amarilla.',
+    alt: t(
+      'Diez trabajadores posan sobre rieles apilados, frente a unos galpones.',
+      'Ten workers pose on stacked rails in front of some sheds.',
+    ),
+    dorso: t(
+      'Atrás, a mano: Doc Sud, Ria Chuelo, Casa amarilla.',
+      'On the back, handwritten: Doc Sud, Ria Chuelo, Casa amarilla.',
+    ),
     anchoDorso: 900,
     altoDorso: 631,
     puntos: [[49267, 61561]],
@@ -35,8 +42,14 @@ export const FOTOS_FIN = [
     ancho: 900,
     alto: 555,
     lugar: 'Monte Grande, 1942',
-    alt: 'Cuatro trabajadores con palas posan bajo los árboles, junto a una vía.',
-    dorso: 'Atrás, a mano, en una postal: Monte Grande, 1942.',
+    alt: t(
+      'Cuatro trabajadores con palas posan bajo los árboles, junto a una vía.',
+      'Four workers with shovels pose under the trees, next to a track.',
+    ),
+    dorso: t(
+      'Atrás, a mano, en una postal: Monte Grande, 1942.',
+      'On the back, handwritten on a postcard: Monte Grande, 1942.',
+    ),
     anchoDorso: 900,
     altoDorso: 549,
     puntos: [[49147, 61396]],
@@ -45,9 +58,15 @@ export const FOTOS_FIN = [
     archivo: '05',
     ancho: 584,
     alto: 900,
-    lugar: 'De Maipú a Vivoratá',
-    alt: 'Dos hombres posan sobre una vía en obra; uno sostiene una herramienta de madera en forma de T.',
-    dorso: 'Atrás, a mano: Mar del Plata, Renovación Vía, Entre Maipú a Vivoratá.',
+    lugar: t('De Maipú a Vivoratá', 'From Maipú to Vivoratá'),
+    alt: t(
+      'Dos hombres posan sobre una vía en obra; uno sostiene una herramienta de madera en forma de T.',
+      'Two men pose on a track under construction; one holds a T-shaped wooden tool.',
+    ),
+    dorso: t(
+      'Atrás, a mano: Mar del Plata, Renovación Vía, Entre Maipú a Vivoratá.',
+      'On the back, handwritten: Mar del Plata, Renovación Vía, Entre Maipú a Vivoratá.',
+    ),
     anchoDorso: 636,
     altoDorso: 900,
     puntos: [
@@ -75,10 +94,14 @@ export const FOTOS_FIN = [
     >
       <div class="select-text">
         <p class="dedicatoria">
-          En memoria de mi bisabuelo y de los inmigrantes polacos que ayudaron a construir las vías
-          de este mapa.
+          {{
+            t(
+              'En memoria de mi bisabuelo y de los inmigrantes polacos que ayudaron a construir las vías de este mapa.',
+              'In memory of my great-grandfather and the Polish immigrants who helped build the tracks on this map.'
+            )
+          }}
         </p>
-        <p class="fuente">Fotos: archivo familiar.</p>
+        <p class="fuente">{{ t('Fotos: archivo familiar.', 'Photos: family archive.') }}</p>
       </div>
       <ul class="fotos">
         @for (foto of fotos; track foto.archivo; let i = $index) {
@@ -123,7 +146,7 @@ export const FOTOS_FIN = [
               class="foto-abierta"
               role="button"
               tabindex="0"
-              aria-label="Dar vuelta la foto"
+              [attr.aria-label]="t('Dar vuelta la foto', 'Flip the photo')"
               (pointerdown)="apretar($event)"
               (pointermove)="mover($event)"
               (pointerup)="soltar()"
@@ -181,14 +204,22 @@ export const FOTOS_FIN = [
                   </g>
                 </g>
               </svg>
-              <span>Tocá o arrastrá la foto para girarla</span>
+              <span>{{
+                t('Tocá o arrastrá la foto para girarla', 'Tap or drag the photo to flip it')
+              }}</span>
             </p>
             @if (diseno.esCelular()) {
               <button class="ver-mapa" (click)="diseno.vistaCelular.set('mapa')">
-                Ver dónde se sacó
+                {{ t('Ver dónde se sacó', 'See where it was taken') }}
               </button>
             }
-            <button class="cerrar" aria-label="Cerrar la foto" (click)="cerrar()">✕</button>
+            <button
+              class="cerrar"
+              [attr.aria-label]="t('Cerrar la foto', 'Close the photo')"
+              (click)="cerrar()"
+            >
+              ✕
+            </button>
           </figure>
         }
       </div>
@@ -459,6 +490,7 @@ export class Homenaje {
   protected readonly estado = inject(EstadoApp);
   protected readonly diseno = inject(Diseno);
   protected readonly fotos = FOTOS_FIN;
+  protected readonly t = t;
   // El giro de cada foto en grados y cuántos px baja: sueltas sobre la mesa, no alineadas.
   protected readonly ABANICO = [
     { giro: -6, bajada: 0 },

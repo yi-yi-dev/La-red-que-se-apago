@@ -12,6 +12,7 @@ import {
 import * as d3 from 'd3';
 import { CargaDatos, Datos } from './datos';
 import { CHECKPOINTS, EstadoApp, opacidadDesde, opacidadEn, opacidadHasta } from './estado';
+import { METODOLOGIA, miles, t } from './idioma';
 import { provinciasDelUltimoCenso } from './serie-censos';
 
 // Los polígonos de las provincias y la proyección que los encaja en un lugar: la usan este mapa y la
@@ -62,10 +63,26 @@ export function proyeccionDelMapa(poligonos: [number, number][][][], ancho: numb
 // Los códigos de `categoria` en vias.json, en el orden de la leyenda. La explicación es para quien
 // nunca leyó del tema.
 export const CATEGORIAS = [
-  { codigo: 3, nombre: 'Con pasajeros', explicacion: 'trenes que llevan gente' },
-  { codigo: 2, nombre: 'Sólo carga', explicacion: 'pasan trenes, pero no llevan gente' },
-  { codigo: 1, nombre: 'Vía sin trenes', explicacion: 'los rieles están, no pasa nada' },
-  { codigo: 0, nombre: 'Vía levantada', explicacion: 'se sacaron los rieles' },
+  {
+    codigo: 3,
+    nombre: t('Con pasajeros', 'Passenger'),
+    explicacion: t('trenes que llevan gente', 'trains that carry people'),
+  },
+  {
+    codigo: 2,
+    nombre: t('Sólo carga', 'Freight only'),
+    explicacion: t('pasan trenes, pero no llevan gente', "trains run, but they don't carry people"),
+  },
+  {
+    codigo: 1,
+    nombre: t('Vía sin trenes', 'Track without trains'),
+    explicacion: t('los rieles están, no pasa nada', 'the rails are there, nothing runs'),
+  },
+  {
+    codigo: 0,
+    nombre: t('Vía levantada', 'Torn-up track'),
+    explicacion: t('se sacaron los rieles', 'the rails were removed'),
+  },
 ];
 const NO_CONSTRUIDA = -1;
 const DURACION_FUNDIDO = 180; // ms que tarda en aparecer una parte de vía
@@ -76,22 +93,33 @@ const INDICE_PROVINCIAS = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id ==
 const INDICE_RECONECTAR = CHECKPOINTS.findIndex((checkpoint) => checkpoint.id === 'reconectar');
 // Las categorías de censos.json, en su orden, para el mapa de las provincias.
 const CATEGORIAS_GENTE = [
-  { nombre: 'Con tren de pasajeros', color: 'var(--color-via-pasajeros)' },
-  { nombre: 'Solo tren de carga', color: 'var(--color-via-carga)' },
-  { nombre: 'Perdió el tren', color: 'var(--color-via-inactiva)' },
-  { nombre: 'Nunca tuvo tren', color: 'var(--color-sin-tren)' },
+  {
+    nombre: t('Con tren de pasajeros', 'With passenger trains'),
+    color: 'var(--color-via-pasajeros)',
+  },
+  { nombre: t('Solo tren de carga', 'Freight trains only'), color: 'var(--color-via-carga)' },
+  { nombre: t('Perdió el tren', 'Lost the train'), color: 'var(--color-via-inactiva)' },
+  { nombre: t('Nunca tuvo tren', 'Never had a train'), color: 'var(--color-sin-tren)' },
 ];
 // hm de mapa: el radio del círculo del departamento con más gente. Al estar en unidades del mapa,
 // los círculos siguen su tamaño cuando el mapa se achica.
 const RADIO_MAXIMO = 860;
 const DURACION_DORLING = 600; // ms que tardan los círculos en pasar de una parte elegida a otra
 // Para las categorías de censos.json, en su orden: la frase de la descripción y el color.
-const NOMBRES_GENTE = [
-  'a menos de 10 km de una estación con trenes de pasajeros',
-  'a menos de 10 km de una estación con solo trenes de carga',
-  'a menos de 10 km de una estación que se quedó sin trenes',
-  'a más de 10 km de cualquier estación de tren',
-];
+const NOMBRES_GENTE = t(
+  [
+    'a menos de 10 km de una estación con trenes de pasajeros',
+    'a menos de 10 km de una estación con solo trenes de carga',
+    'a menos de 10 km de una estación que se quedó sin trenes',
+    'a más de 10 km de cualquier estación de tren',
+  ],
+  [
+    'less than 10 km from a station with passenger trains',
+    'less than 10 km from a station with freight trains only',
+    'less than 10 km from a station that lost its trains',
+    'more than 10 km from any train station',
+  ],
+);
 const VALORES_REFERENCIA = [100_000, 500_000, 1_500_000]; // personas de los círculos de la escala
 const ESPACIO_REFERENCIA = 8; // px entre los círculos de la escala
 // Van como atributo: los estilos del componente no llegan a lo que crea d3.
@@ -142,7 +170,9 @@ function categoriaEn(
       #lienzo
       class="mapa-vias size-full"
       role="img"
-      aria-label="Mapa de la red ferroviaria argentina"
+      [attr.aria-label]="
+        t('Mapa de la red ferroviaria argentina', 'Map of the Argentine railway network')
+      "
       [class.ocultar-3]="!visibles()[3]"
       [class.ocultar-2]="!visibles()[2]"
       [class.ocultar-1]="!visibles()[1]"
@@ -185,7 +215,12 @@ function categoriaEn(
       [class.invisible]="opacidadProvincias() === 0"
     >
       <p class="mb-1 font-bold">
-        Parte de la gente de cada provincia en el censo de {{ ultimoCenso() }}
+        {{
+          t(
+            'Parte de la gente de cada provincia en el censo de ' + ultimoCenso(),
+            'Share of people in each province, ' + ultimoCenso() + ' census'
+          )
+        }}
       </p>
       @for (categoria of categoriasGente; track categoria.nombre; let i = $index) {
         <button
@@ -247,7 +282,14 @@ function categoriaEn(
         </svg>
         <p>{{ descripcion }}</p>
       } @else {
-        <p>Tocá una parte de una barra del gráfico para ver acá dónde vive esa gente.</p>
+        <p>
+          {{
+            t(
+              'Tocá una parte de una barra del gráfico para ver acá dónde vive esa gente.',
+              'Tap part of a bar in the chart to see here where those people live.'
+            )
+          }}
+        </p>
       }
     </div>
     <!-- En el Atlántico, entre Chubut y Malvinas. Las explicaciones se parten en dos líneas para
@@ -269,7 +311,12 @@ function categoriaEn(
         <svg class="mt-[5px] shrink-0" width="22" height="8" aria-hidden="true">
           <line x1="2" y1="4" x2="20" y2="4" class="muestra portada-perdida" />
         </svg>
-        <span>Vías que perdieron sus trenes de pasajeros desde {{ anioPico() }}</span>
+        <span>{{
+          t(
+            'Vías que perdieron sus trenes de pasajeros desde ' + anioPico(),
+            'Tracks that lost their passenger trains since ' + anioPico()
+          )
+        }}</span>
       </button>
       <button
         class="entrada flex cursor-pointer items-start gap-2 text-left"
@@ -280,7 +327,7 @@ function categoriaEn(
         <svg class="mt-[5px] shrink-0" width="22" height="8" aria-hidden="true">
           <line x1="2" y1="4" x2="20" y2="4" class="muestra portada-queda" />
         </svg>
-        <span>Vías que todavía los tienen</span>
+        <span>{{ t('Vías que todavía los tienen', 'Tracks that still have them') }}</span>
       </button>
     </div>
     <div
@@ -313,40 +360,45 @@ function categoriaEn(
       class="absolute right-0 bottom-0 w-52 text-left text-[10px] leading-snug"
       [style.opacity]="0.75 * opacidadFuente()"
     >
-      Fuentes:
+      {{ t('Fuentes:', 'Sources:') }}
       @if (despuesDeLaGente()) {
         <!-- Las provincias, pintadas con la gente del último censo. -->
-        <a class="underline" href="metodologia.html#indec" target="_blank" rel="noopener">INDEC</a>,
-        <a class="underline" href="metodologia.html#ide" target="_blank" rel="noopener"
-          >IDE de Transporte</a
+        <a class="underline" [href]="METODOLOGIA + '#indec'" target="_blank" rel="noopener">INDEC</a
         >,
-        <a class="underline" href="metodologia.html#osm" target="_blank" rel="noopener"
+        <a class="underline" [href]="METODOLOGIA + '#ide'" target="_blank" rel="noopener">{{
+          t('IDE de Transporte', 'Transport SDI')
+        }}</a
+        >,
+        <a class="underline" [href]="METODOLOGIA + '#osm'" target="_blank" rel="noopener"
           >© OpenStreetMap</a
         >
-        e
+        {{ t('e', 'and') }}
       } @else if (desdeLaGente()) {
-        <a class="underline" href="metodologia.html#indec" target="_blank" rel="noopener">INDEC</a>,
-        <a class="underline" href="metodologia.html#ide" target="_blank" rel="noopener"
-          >IDE de Transporte</a
+        <a class="underline" [href]="METODOLOGIA + '#indec'" target="_blank" rel="noopener">INDEC</a
         >,
-        <a class="underline" href="metodologia.html#osm" target="_blank" rel="noopener"
+        <a class="underline" [href]="METODOLOGIA + '#ide'" target="_blank" rel="noopener">{{
+          t('IDE de Transporte', 'Transport SDI')
+        }}</a
+        >,
+        <a class="underline" [href]="METODOLOGIA + '#osm'" target="_blank" rel="noopener"
           >© OpenStreetMap</a
         >
-        e
+        {{ t('e', 'and') }}
       } @else {
-        <a class="underline" href="metodologia.html#ide" target="_blank" rel="noopener"
-          >IDE de Transporte</a
+        <a class="underline" [href]="METODOLOGIA + '#ide'" target="_blank" rel="noopener">{{
+          t('IDE de Transporte', 'Transport SDI')
+        }}</a
         >,
-        <a class="underline" href="metodologia.html#osm" target="_blank" rel="noopener"
+        <a class="underline" [href]="METODOLOGIA + '#osm'" target="_blank" rel="noopener"
           >© OpenStreetMap</a
         >,
-        <a class="underline" href="metodologia.html#wikidata" target="_blank" rel="noopener"
+        <a class="underline" [href]="METODOLOGIA + '#wikidata'" target="_blank" rel="noopener"
           >Wikidata</a
         >
-        e
+        {{ t('e', 'and') }}
       }
-      <a class="underline" href="metodologia.html#ign" target="_blank" rel="noopener">IGN</a>.
-      Elaboración propia.
+      <a class="underline" [href]="METODOLOGIA + '#ign'" target="_blank" rel="noopener">IGN</a>.
+      {{ t('Elaboración propia.', 'Own elaboration.') }}
     </p>
   `,
   styles: `
@@ -432,6 +484,8 @@ export class MapaArgentina {
   private readonly lienzo = viewChild.required<ElementRef<SVGSVGElement>>('lienzo');
   private readonly tamanio = signal({ ancho: 0, alto: 0 }); // px
   protected readonly categorias = CATEGORIAS;
+  protected readonly METODOLOGIA = METODOLOGIA;
+  protected readonly t = t;
   protected readonly ORDEN_DE_DIBUJO = [0, 1, 2, 3];
   protected readonly visibles = this.estado.viasVisiblesMapa; // por código de categoría
 
@@ -592,7 +646,8 @@ export class MapaArgentina {
       return null;
     }
     const categoria = NOMBRES_GENTE[eleccion.categoria];
-    return `Población ${categoria}, en ${datos.censos.censo[eleccion.censo]}.`;
+    const censo = datos.censos.censo[eleccion.censo];
+    return t(`Población ${categoria}, en ${censo}.`, `People living ${categoria}, in ${censo}.`);
   });
   protected readonly anioPico = signal(0); // el año con más vía con trenes de pasajeros
 
@@ -625,8 +680,8 @@ export class MapaArgentina {
     for (const valor of VALORES_REFERENCIA) {
       const r = radio(valor);
       // Cada número mide unos 6 px por carácter: el lugar de cada círculo es el mayor de los dos.
-      const lugar = Math.max(2 * r, valor.toLocaleString('es-AR').length * 6);
-      circulos.push({ r, x: x + lugar / 2, texto: valor.toLocaleString('es-AR') });
+      const lugar = Math.max(2 * r, miles(valor).length * 6);
+      circulos.push({ r, x: x + lugar / 2, texto: miles(valor) });
       x += lugar + ESPACIO_REFERENCIA;
     }
     const base = 2 * radio(VALORES_REFERENCIA[VALORES_REFERENCIA.length - 1]) + 1;
