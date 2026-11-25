@@ -8,8 +8,8 @@ Made for Contar con Datos, the national data-storytelling contest organized by U
 San Andrés (UdeSA) and the Subsecretaría de Ciencia y Tecnología.
 
 <p align="center">
-  <a href="https://yi-yi-dev.github.io/La-red-que-se-apago/en/"><b>▶ Open the app (English)</b></a>
-  &nbsp;·&nbsp;
+  <a href="https://yi-yi-dev.github.io/La-red-que-se-apago/en/"><b>Open the app (English)</b></a>
+  &nbsp; | &nbsp;
   <a href="https://yi-yi-dev.github.io/La-red-que-se-apago/"><b>Abrir la app (español)</b></a>
 </p>
 
