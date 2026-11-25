@@ -13,7 +13,7 @@ San Andrés (UdeSA) and the Subsecretaría de Ciencia y Tecnología.
   <a href="https://yi-yi-dev.github.io/La-red-que-se-apago/"><b>Abrir la app (español)</b></a>
 </p>
 
-ASD
+https://github.com/user-attachments/assets/bc997c9e-6c83-4cbb-bb61-d152109293fb
 
 [Watch on YouTube](YOUTUBE_URL)
 
